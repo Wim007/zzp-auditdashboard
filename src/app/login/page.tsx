@@ -10,23 +10,21 @@ export default function LoginPage() {
   const [bezig, setBezig] = useState(false)
   const router = useRouter()
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+  async function login(e: string, p: string) {
     setBezig(true)
     setFout('')
-
-    const result = await signIn('credentials', {
-      email,
-      password: wachtwoord,
-      redirect: false,
-    })
-
+    const result = await signIn('credentials', { email: e, password: p, redirect: false })
     setBezig(false)
     if (result?.error) {
-      setFout('E-mailadres of wachtwoord onjuist.')
+      setFout('Inloggen mislukt.')
     } else {
       router.push('/')
     }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    await login(email, wachtwoord)
   }
 
   return (
@@ -38,57 +36,70 @@ export default function LoginPage() {
             <p className="text-sm text-gray-500 mt-1">Veiligheidsdashboard</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                E-mailadres
-              </label>
+          {/* Demo-knoppen — één klik toegang */}
+          <div className="mb-6 space-y-2">
+            <p className="text-xs text-gray-500 text-center mb-3">Klik om direct in te loggen als demo</p>
+            <button
+              onClick={() => login('inkoop@delinden.nl', 'linden123')}
+              disabled={bezig}
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-3 text-sm transition-colors text-left flex items-center justify-between"
+            >
+              <span>
+                <span className="font-semibold">Zorginkoper</span>
+                <span className="text-blue-200 ml-2 text-xs">Thuiszorg De Linden</span>
+              </span>
+              <span className="text-blue-200 text-xs">{bezig ? '...' : 'Inloggen →'}</span>
+            </button>
+            <button
+              onClick={() => login('beheerder@samenontzorgen.nl', 'beheerder123')}
+              disabled={bezig}
+              className="w-full bg-gray-800 hover:bg-gray-900 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-3 text-sm transition-colors text-left flex items-center justify-between"
+            >
+              <span>
+                <span className="font-semibold">Beheerder</span>
+                <span className="text-gray-400 ml-2 text-xs">SamenOntzorgen</span>
+              </span>
+              <span className="text-gray-400 text-xs">{bezig ? '...' : 'Inloggen →'}</span>
+            </button>
+          </div>
+
+          {fout && (
+            <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-sm text-red-700 mb-4">
+              {fout}
+            </div>
+          )}
+
+          {/* Optioneel handmatig inloggen */}
+          <details className="mt-2">
+            <summary className="text-xs text-gray-400 cursor-pointer hover:text-gray-600 text-center">
+              Handmatig inloggen
+            </summary>
+            <form onSubmit={handleSubmit} className="space-y-3 mt-4">
               <input
-                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="uw@emailadres.nl"
+                placeholder="e-mailadres"
               />
-            </div>
-            <div>
-              <label htmlFor="wachtwoord" className="block text-sm font-medium text-gray-700 mb-1">
-                Wachtwoord
-              </label>
               <input
-                id="wachtwoord"
                 type="password"
                 value={wachtwoord}
                 onChange={(e) => setWachtwoord(e.target.value)}
                 required
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="wachtwoord"
               />
-            </div>
-
-            {fout && (
-              <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-sm text-red-700">
-                {fout}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={bezig}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 text-sm transition-colors"
-            >
-              {bezig ? 'Inloggen...' : 'Inloggen'}
-            </button>
-          </form>
-
-          <div className="mt-6 pt-4 border-t border-gray-100">
-            <p className="text-xs text-gray-400 text-center mb-2">Demo-accounts</p>
-            <div className="text-xs text-gray-500 space-y-1">
-              <p><span className="font-mono bg-gray-100 px-1 rounded">inkoop@delinden.nl</span> / linden123 — Zorginkoper</p>
-              <p><span className="font-mono bg-gray-100 px-1 rounded">beheerder@samenontzorgen.nl</span> / beheerder123 — Beheerder</p>
-            </div>
-          </div>
+              <button
+                type="submit"
+                disabled={bezig}
+                className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 text-sm transition-colors"
+              >
+                {bezig ? 'Inloggen...' : 'Inloggen'}
+              </button>
+            </form>
+          </details>
         </div>
       </div>
     </div>
