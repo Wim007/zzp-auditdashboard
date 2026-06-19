@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Zorginstelling {
+  id              String          @id @default(cuid())
+  naam            String
+  contactEmail    String?
+  contactTelefoon String?
+  adres           String?
+  gebruikers      Gebruiker[]
+  opdrachten      Opdracht[]
+  kwartaalaudits  Kwartaalaudit[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model CZO {
+  id          String      @id @default(cuid())
+  naam        String
+  bigNummer   String?
+  kvkNummer   String?
+  status      CZOStatus   @default(ACTIEF)
+  eigenTarief Decimal?    @db.Decimal(10, 2)
+  functie     String?
+  email       String?
+  telefoon    String?
+  opdrachten  Opdracht[]
+  documenten  Document[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+enum CZOStatus {
+  ACTIEF
+  HOLD
+}
+
+model Opdracht {
+  id               String         @id @default(cuid())
+  czoId            String
+  czo              CZO            @relation(fields: [czoId], references: [id])
+  zorginstellingId String
+  zorginstelling   Zorginstelling @relation(fields: [zorginstellingId], references: [id])
+  startdatum       DateTime
+  einddatum        DateTime?
+  afdeling         String?
+  locatie          String?
+  omschrijving     String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+enum DocumentType {
+  DIPLOMA
+  BIG
+  VOG
+  BAV
+  AOV
+  WKKGZ
+  SCHOLING
+  KVK
+}
+
+enum DocumentStatus {
+  GELDIG
+  AANDACHT
+  ONTBREEKT
+}
+
+model Document {
+  id                 String         @id @default(cuid())
+  czoId              String
+  czo                CZO            @relation(fields: [czoId], references: [id])
+  type               DocumentType
+  status             DocumentStatus
+  omschrijving       String?
+  afgiftedatum       DateTime?
+  vervaldatum        DateTime?
+  bestandsverwijzing String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+}
+
+model Kwartaalaudit {
+  id               String         @id @default(cuid())
+  zorginstellingId String
+  zorginstelling   Zorginstelling @relation(fields: [zorginstellingId], references: [id])
+  kwartaal         String
+  status           AuditStatus    @default(CONCEPT)
+  datum            DateTime?
+  notities         String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+enum AuditStatus {
+  CONCEPT
+  GETEKEND
+}
+
+model Gebruiker {
+  id               String          @id @default(cuid())
+  email            String          @unique
+  passwordHash     String
+  naam             String
+  rol              Rol
+  zorginstellingId String?
+  zorginstelling   Zorginstelling? @relation(fields: [zorginstellingId], references: [id])
+  toegangslogs     Toegangslog[]
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+enum Rol {
+  INSTELLING_GEBRUIKER
+  BEHEERDER
+}
+
+model Toegangslog {
+  id          String    @id @default(cuid())
+  gebruikerId String
+  gebruiker   Gebruiker @relation(fields: [gebruikerId], references: [id])
+  actie       String
+  doelType    String
+  doelId      String
+  doelNaam    String?
+  tijdstip    DateTime  @default(now())
+  metadata    Json?
+}
