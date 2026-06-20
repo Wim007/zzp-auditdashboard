@@ -74,14 +74,14 @@ export default async function DashboardPage() {
     <div className="min-h-screen">
       <Navigatie rol={session.user.rol} naam={naam} />
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Kop */}
-        <div className="flex items-start justify-between mb-8">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{zorginstelling.naam}</h1>
+        <div className="flex items-start justify-between gap-3 mb-6 sm:mb-8">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">{zorginstelling.naam}</h1>
             <p className="text-sm text-gray-500 mt-1">Kwartaaloverzicht Q2/2026</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <StatusBadge status={overigeStatus} />
             <BewijspakketKnop />
           </div>
@@ -122,19 +122,19 @@ export default async function DashboardPage() {
               <Link
                 key={czo.id}
                 href={`/dashboard/czo/${czo.id}`}
-                className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-3 px-4 sm:px-6 py-4 hover:bg-gray-50 transition-colors"
               >
                 <StatusStip status={visueleStatus} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-900">{czo.bedrijfsnaam ?? czo.naam}</span>
+                    <span className="font-medium text-gray-900 truncate">{czo.bedrijfsnaam ?? czo.naam}</span>
                     {czo.status === 'HOLD' && (
-                      <span className="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">Hold</span>
+                      <span className="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded flex-shrink-0">Hold</span>
                     )}
                   </div>
-                  <div className="text-sm text-gray-500 mt-0.5">{czo.naam} &middot; {czo.functie}</div>
+                  <div className="text-sm text-gray-500 mt-0.5 truncate">{czo.naam} &middot; {czo.functie}</div>
                 </div>
-                <div className="text-right text-sm">
+                <div className="text-right text-sm flex-shrink-0 hidden sm:block">
                   <div className="text-gray-600">{aantalOpdrachten} opdracht{aantalOpdrachten !== 1 ? 'en' : ''}</div>
                   {czo.eigenTarief && (
                     <div className="text-gray-400">€ {Number(czo.eigenTarief)}/uur</div>

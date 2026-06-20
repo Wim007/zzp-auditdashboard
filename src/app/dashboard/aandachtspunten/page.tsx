@@ -57,7 +57,7 @@ export default async function AandachtspuntenPage() {
   return (
     <div className="min-h-screen">
       <Navigatie rol={session.user.rol} naam={naam} />
-      <main className="max-w-4xl mx-auto px-6 py-8">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Aandachtspunten</h1>
         <p className="text-sm text-gray-500 mb-6">{zorginstelling.naam}</p>
 
@@ -90,7 +90,7 @@ function Groep({ titel, punten, kleur }: { titel: string; punten: Aandachtspunt[
       <div className="space-y-3">
         {punten.map((p) => (
           <div key={p.id} className={`border rounded-xl p-4 ${bg}`}>
-            <div className="flex items-start justify-between gap-2">
+            <div className="flex flex-col gap-3">
               <div>
                 <p className={`text-xs font-medium uppercase tracking-wide mb-1 ${subtext}`}>
                   {typeLabels[p.type] ?? p.type}
@@ -100,16 +100,16 @@ function Groep({ titel, punten, kleur }: { titel: string; punten: Aandachtspunt[
                   <p className="text-xs text-gray-500 mt-1">CZO: {p.czoNaam}</p>
                 )}
               </div>
-              <div className="flex-shrink-0 flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 {p.type === 'ROOSTERVERVANGING' && p.czoNaam && (
                   <VervangersKnop czoNaam={p.czoNaam} />
                 )}
                 {p.czoId && (
                   <a
                     href={`/dashboard/czo/${p.czoId}`}
-                    className="text-xs bg-white border border-current px-2 py-1 rounded-md hover:bg-opacity-80 transition-colors"
+                    className="text-xs bg-white border border-current px-2 py-1.5 rounded-md hover:bg-opacity-80 transition-colors"
                   >
-                    Dossier
+                    Dossier bekijken
                   </a>
                 )}
               </div>

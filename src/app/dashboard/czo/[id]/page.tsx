@@ -74,7 +74,7 @@ export default async function CZODetailPage({ params }: { params: { id: string }
   return (
     <div className="min-h-screen">
       <Navigatie rol={rol} naam={naam} />
-      <main className="max-w-4xl mx-auto px-6 py-8">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
         {/* Broodkruimel */}
         <Link href="/dashboard" className="text-sm text-blue-600 hover:underline mb-4 inline-block">
@@ -82,14 +82,14 @@ export default async function CZODetailPage({ params }: { params: { id: string }
         </Link>
 
         {/* Header */}
-        <div className="flex items-start justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{czo.bedrijfsnaam ?? czo.naam}</h1>
+        <div className="flex items-start justify-between gap-3 mb-6">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">{czo.bedrijfsnaam ?? czo.naam}</h1>
             <p className="text-sm text-gray-500 mt-1">
               {czo.bedrijfsnaam ? `${czo.naam} · ` : ''}{czo.functie}{czo.eigenTarief ? ` · € ${Number(czo.eigenTarief)}/uur` : ''}
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <StatusBadge status={score.totaalStatus} />
             <BewijspakketKnop czoIds={[czo.id]} />
           </div>
@@ -171,8 +171,8 @@ export default async function CZODetailPage({ params }: { params: { id: string }
           <div className="divide-y divide-gray-50">
             {opdrachten.length === 0 && <p className="px-5 py-4 text-sm text-gray-400">Geen opdrachten.</p>}
             {opdrachten.map((o) => (
-              <div key={o.id} className="px-5 py-3 text-sm">
-                <div className="flex items-center justify-between">
+              <div key={o.id} className="px-4 sm:px-5 py-3 text-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-0.5">
                   <div>
                     <span className="font-medium text-gray-900">{o.zorginstellingNaam ?? o.zorginstellingId}</span>
                     {o.afdeling && <span className="text-gray-500"> · {o.afdeling}</span>}
@@ -190,8 +190,8 @@ export default async function CZODetailPage({ params }: { params: { id: string }
 
         {/* Negen gezichtspunten */}
         <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-900">Negen gezichtspunten (Deliveroo/Uber-arrest)</h2>
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <h2 className="font-semibold text-gray-900 text-sm sm:text-base">Negen gezichtspunten (Deliveroo/Uber-arrest)</h2>
             <StatusBadge status={score.totaalStatus} />
           </div>
           <p className="text-xs text-gray-500 mb-4">
