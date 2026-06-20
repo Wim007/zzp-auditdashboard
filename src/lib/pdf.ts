@@ -66,7 +66,7 @@ function bouwPaginaInhoud(params: {
   const inhoud: React.ReactElement[] = [
     // Kop
     React.createElement(View, { key: 'kop', style: stijlen.kop },
-      React.createElement(Text, { style: stijlen.title }, 'Bewijspakket Compliance — SamenOntzorgen'),
+      React.createElement(Text, { style: stijlen.title }, 'Kwalificatie en ondernemersverklaring — SamenOntzorgen'),
       React.createElement(Text, { style: stijlen.subtitle }, `Instelling: ${zorginstelling.naam}`),
       React.createElement(Text, { style: stijlen.subtitle }, `Variant: ${variantLabel}`),
       React.createElement(Text, { style: stijlen.subtitle }, `Gegenereerd door: ${generatorNaam}`),

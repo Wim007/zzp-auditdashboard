@@ -23,7 +23,7 @@ export default async function LogPage() {
         </div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Toegangslog</h1>
         <p className="text-sm text-gray-500 mb-6">
-          Alle inzages en bewijspakket-generaties worden hier geregistreerd conform de AVG.
+          Alle inzages en gegenereerde verklaringen worden hier geregistreerd conform de AVG.
         </p>
 
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">

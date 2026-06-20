@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
   })
 
   const datum = new Date().toISOString().split('T')[0]
-  const bestandsnaam = `bewijspakket-${variant.toLowerCase()}-${datum}.pdf`
+  const bestandsnaam = `verklaring-${variant.toLowerCase()}-${datum}.pdf`
 
   return new NextResponse(pdfBuffer, {
     headers: {
