@@ -21,10 +21,10 @@ export default async function BeheerPage() {
   return (
     <div className="min-h-screen">
       <Navigatie rol={session.user.rol} naam={session.user.naam} />
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">Beheer — SamenOntzorgen</h1>
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8">Beheer — SamenOntzorgen</h1>
 
-        <div className="grid md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
           <div className="bg-white border border-gray-200 rounded-xl p-4">
             <div className="text-xs text-gray-500">Opdrachtgevers</div>
             <div className="text-2xl font-bold text-gray-900 mt-1">{instellingen.length}</div>
