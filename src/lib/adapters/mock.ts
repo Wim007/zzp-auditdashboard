@@ -27,6 +27,7 @@ const czos: CZO[] = [
   {
     id: 'czo-1',
     naam: 'Fatima Youssef',
+    bedrijfsnaam: 'Youssef Zorgverlening',
     bigNummer: '19001234501',
     kvkNummer: '87654321',
     status: 'ACTIEF',
@@ -37,6 +38,7 @@ const czos: CZO[] = [
   {
     id: 'czo-2',
     naam: 'Jan de Vries',
+    bedrijfsnaam: 'De Vries Thuiszorg',
     bigNummer: '29002345602',
     kvkNummer: '76543210',
     status: 'ACTIEF',
@@ -47,6 +49,7 @@ const czos: CZO[] = [
   {
     id: 'czo-3',
     naam: 'Miriam Bakker',
+    bedrijfsnaam: 'Bakker Zorg & Welzijn',
     bigNummer: '39003456703',
     kvkNummer: '65432109',
     status: 'ACTIEF',
@@ -57,6 +60,7 @@ const czos: CZO[] = [
   {
     id: 'czo-4',
     naam: 'Ahmed Khalil',
+    bedrijfsnaam: 'Khalil Verpleging',
     bigNummer: '49004567804',
     kvkNummer: '54321098',
     status: 'ACTIEF',
@@ -67,6 +71,7 @@ const czos: CZO[] = [
   {
     id: 'czo-5',
     naam: 'Sandra Hoek',
+    bedrijfsnaam: 'Hoek Zorgdiensten',
     bigNummer: '59005678905',
     kvkNummer: null, // aandachtspunt: geen KvK
     status: 'ACTIEF',
@@ -77,6 +82,7 @@ const czos: CZO[] = [
   {
     id: 'czo-6',
     naam: 'Peter Smits',
+    bedrijfsnaam: 'Smits Zorg & Welzijn',
     bigNummer: '69006789006',
     kvkNummer: '43210987',
     status: 'ACTIEF',

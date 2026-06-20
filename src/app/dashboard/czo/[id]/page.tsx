@@ -84,8 +84,10 @@ export default async function CZODetailPage({ params }: { params: { id: string }
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{czo.naam}</h1>
-            <p className="text-sm text-gray-500 mt-1">{czo.functie} {czo.eigenTarief ? `· € ${Number(czo.eigenTarief)}/uur` : ''}</p>
+            <h1 className="text-2xl font-bold text-gray-900">{czo.bedrijfsnaam ?? czo.naam}</h1>
+            <p className="text-sm text-gray-500 mt-1">
+              {czo.bedrijfsnaam ? `${czo.naam} · ` : ''}{czo.functie}{czo.eigenTarief ? ` · € ${Number(czo.eigenTarief)}/uur` : ''}
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <StatusBadge status={score.totaalStatus} />

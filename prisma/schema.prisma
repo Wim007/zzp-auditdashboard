@@ -21,10 +21,11 @@ model Zorginstelling {
 }
 
 model CZO {
-  id          String      @id @default(cuid())
-  naam        String
-  bigNummer   String?
-  kvkNummer   String?
+  id           String      @id @default(cuid())
+  naam         String
+  bedrijfsnaam String?
+  bigNummer    String?
+  kvkNummer    String?
   status      CZOStatus   @default(ACTIEF)
   eigenTarief Decimal?    @db.Decimal(10, 2)
   functie     String?

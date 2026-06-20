@@ -17,6 +17,7 @@ export interface Zorginstelling {
 export interface CZO {
   id: string
   naam: string
+  bedrijfsnaam?: string | null
   bigNummer?: string | null
   kvkNummer?: string | null
   status: CZOStatus

@@ -86,7 +86,9 @@ function bouwPaginaInhoud(params: {
   for (const dossier of dossiers) {
     inhoud.push(
       React.createElement(View, { key: `czo-${dossier.czo.id}` },
-        React.createElement(Text, { style: stijlen.sectieKop }, `CZO: ${dossier.czo.naam}`),
+        React.createElement(Text, { style: stijlen.sectieKop },
+          dossier.czo.bedrijfsnaam ? `${dossier.czo.bedrijfsnaam} (${dossier.czo.naam})` : dossier.czo.naam
+        ),
         React.createElement(View, { style: stijlen.rij },
           React.createElement(Text, { style: stijlen.label }, 'Functie:'),
           React.createElement(Text, { style: stijlen.waarde }, dossier.czo.functie ?? '-'),

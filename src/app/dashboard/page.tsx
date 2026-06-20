@@ -127,7 +127,7 @@ export default async function DashboardPage() {
                 <StatusStip status={visueleStatus} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-900">{czo.naam}</span>
+                    <span className="font-medium text-gray-900">{czo.bedrijfsnaam ?? czo.naam}</span>
                     {alleenViaSamenOntzorgen && (
                       <span className="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded">Alleen via SO</span>
                     )}
@@ -135,7 +135,7 @@ export default async function DashboardPage() {
                       <span className="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">Hold</span>
                     )}
                   </div>
-                  <div className="text-sm text-gray-500 mt-0.5">{czo.functie}</div>
+                  <div className="text-sm text-gray-500 mt-0.5">{czo.naam} &middot; {czo.functie}</div>
                 </div>
                 <div className="text-right text-sm">
                   <div className="text-gray-600">{aantalOpdrachten} opdracht{aantalOpdrachten !== 1 ? 'en' : ''}</div>
