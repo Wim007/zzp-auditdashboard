@@ -37,7 +37,6 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
     documenten,
     opdrachten,
     opdrachtgeversCount,
-    alleenViaSamenOntzorgen: opdrachtgeversCount <= 1,
     visueleStatus: gezichtspuntenScore.totaalStatus,
     gezichtspuntenScore,
   }

@@ -49,7 +49,6 @@ export async function POST(req: NextRequest) {
       documenten,
       opdrachten,
       opdrachtgeversCount,
-      alleenViaSamenOntzorgen: opdrachtgeversCount <= 1,
       visueleStatus: gezichtspuntenScore.totaalStatus,
       gezichtspuntenScore,
     })

@@ -70,7 +70,7 @@ export async function GET() {
       aantalOpdrachten: (opdrachtenPerCZO[czo.id] ?? []).filter(
         (o) => o.zorginstellingId === zorginstellingId
       ).length,
-      alleenViaSamenOntzorgen: (opdrachtgeversCountPerCZO[czo.id] ?? 1) <= 1,
+      opdrachtgeversCount: opdrachtgeversCountPerCZO[czo.id] ?? 1,
     }
   })
 

@@ -88,7 +88,6 @@ export interface CZODossier {
   documenten: Document[]
   opdrachten: Opdracht[]
   opdrachtgeversCount: number
-  alleenViaSamenOntzorgen: boolean
   visueleStatus: VisueleStatus
   gezichtspuntenScore: GezichtspuntenScore
 }
@@ -110,7 +109,7 @@ export interface GezichtspuntenScore {
 
 export interface Aandachtspunt {
   id: string
-  type: 'ROOSTERVERVANGING' | 'ALLEEN_VIA_SO' | 'AUDIT_OPENSTAAND' | 'DOCUMENT_AANDACHT' | 'GEEN_ONDERNEMERSDOSSIER'
+  type: 'ROOSTERVERVANGING' | 'WEINIG_OPDRACHTGEVERS' | 'AUDIT_OPENSTAAND' | 'DOCUMENT_AANDACHT' | 'GEEN_ONDERNEMERSDOSSIER'
   czoId?: string
   czoNaam?: string
   zorginstellingId?: string
@@ -137,7 +136,7 @@ export interface CZOSamenvatting {
   czo: CZO
   visueleStatus: VisueleStatus
   aantalOpdrachten: number
-  alleenViaSamenOntzorgen: boolean
+  opdrachtgeversCount: number
 }
 
 export type BewijspakketVariant = 'DBA' | 'KWALITEIT' | 'VOLLEDIG'

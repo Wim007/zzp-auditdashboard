@@ -8,7 +8,7 @@ import type { Aandachtspunt } from '@/types'
 
 const typeLabels: Record<Aandachtspunt['type'], string> = {
   ROOSTERVERVANGING: 'Roostervervanging-signaal',
-  ALLEEN_VIA_SO: 'Alleen via SamenOntzorgen',
+  WEINIG_OPDRACHTGEVERS: 'Spreiding opdrachtgevers',
   AUDIT_OPENSTAAND: 'Kwartaalaudit openstaand',
   DOCUMENT_AANDACHT: 'Document aandacht',
   GEEN_ONDERNEMERSDOSSIER: 'Ontbrekend ondernemersdossier',

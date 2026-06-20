@@ -55,14 +55,14 @@ export function berekenAandachtspunten(params: {
       }
     }
 
-    // Alleen-via-SamenOntzorgen-signaal
-    if (opdrachtgeversCount <= 1) {
+    // Weinig opdrachtgevers-signaal
+    if (opdrachtgeversCount < 3) {
       punten.push({
-        id: `alleen-via-so-${czo.id}`,
-        type: 'ALLEEN_VIA_SO',
+        id: `weinig-opdrachtgevers-${czo.id}`,
+        type: 'WEINIG_OPDRACHTGEVERS',
         czoId: czo.id,
-        czoNaam: czo.naam,
-        omschrijving: `${czo.naam} werkt uitsluitend via SamenOntzorgen. Er zijn geen andere opdrachtgevers zichtbaar, wat een risicosignaal is voor het DBA-toetskader.`,
+        czoNaam: czo.bedrijfsnaam ?? czo.naam,
+        omschrijving: `${czo.bedrijfsnaam ?? czo.naam} heeft in het afgelopen jaar bij ${opdrachtgeversCount} instelling${opdrachtgeversCount === 1 ? '' : 'en'} gewerkt. Doel is 3 of meer opdrachtgevers per jaar.`,
         status: 'OPEN',
         ernst: 'AANDACHT',
       })

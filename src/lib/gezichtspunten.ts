@@ -27,7 +27,6 @@ export function berekenGezichtspunten(input: GezichtspuntenInput): Gezichtspunte
   const heeftKvK = Boolean(czo.kvkNummer && czo.kvkNummer.length > 0)
   const heeftBAV = documenten.some((d) => d.type === 'BAV' && d.status === 'GELDIG')
   const heeftEigenTarief = czo.eigenTarief != null && Number(czo.eigenTarief) > 0
-  const alleenViaSamenOntzorgen = opdrachtgeversCount <= 1
 
   const actiefOpdrachten = opdrachten.filter((o) => !o.einddatum || new Date(o.einddatum) >= new Date())
   const langeLoopendeOpdrachten = opdrachten.filter((o) => {
@@ -96,14 +95,14 @@ export function berekenGezichtspunten(input: GezichtspuntenInput): Gezichtspunte
       naam: 'Ondernemerschap',
       omschrijving: 'De CZO is ingeschreven bij de KvK, stelt een eigen tarief, werkt voor meerdere opdrachtgevers en investeert in eigen scholing.',
       gewicht: 'ZWAAR',
-      ...beoordeelOndernemerschap(heeftKvK, heeftEigenTarief, alleenViaSamenOntzorgen, opdrachtgeversCount),
+      ...beoordeelOndernemerschap(heeftKvK, heeftEigenTarief, opdrachtgeversCount),
     },
     {
       id: 'economische-afhankelijkheid',
       naam: 'Economische afhankelijkheid',
       omschrijving: 'De CZO is niet economisch afhankelijk van één opdrachtgever; inkomen is gespreid over meerdere instellingen.',
       gewicht: 'ZWAAR',
-      ...beoordeelEconomischeAfhankelijkheid(alleenViaSamenOntzorgen, opdrachtgeversCount),
+      ...beoordeelEconomischeAfhankelijkheid(opdrachtgeversCount),
     },
   ]
 
@@ -173,26 +172,24 @@ function beoordeelFinancieelRisico(
 function beoordeelOndernemerschap(
   heeftKvK: boolean | null | undefined,
   heeftEigenTarief: boolean,
-  alleenViaSamenOntzorgen: boolean,
   opdrachtgeversCount: number
 ): Pick<GezichtspuntBeoordeling, 'status' | 'toelichting' | 'mitigatie'> {
   const problemen: string[] = []
   if (!heeftKvK) problemen.push('geen KvK-inschrijving')
   if (!heeftEigenTarief) problemen.push('geen eigen tarief geregistreerd')
-  if (alleenViaSamenOntzorgen) problemen.push('werkt uitsluitend via SamenOntzorgen (geen spreiding).')
 
   if (problemen.length >= 2) {
     return {
       status: 'RISICO',
       toelichting: `Ondernemerschap onvoldoende aantoonbaar: ${problemen.join(', ')}.`,
-      mitigatie: 'KvK aantonen, eigen tarief vastleggen, actief andere opdrachtgevers zoeken.',
+      mitigatie: 'KvK aantonen en eigen tarief vastleggen.',
     }
   }
   if (problemen.length === 1) {
     return {
       status: 'AANDACHT',
       toelichting: `Aandachtspunt: ${problemen[0]}.`,
-      mitigatie: 'Coachen op spreiding van opdrachtgevers.',
+      mitigatie: 'Ontbrekend punt aanvullen in het ledenadministratie.',
     }
   }
   return {
@@ -202,25 +199,24 @@ function beoordeelOndernemerschap(
 }
 
 function beoordeelEconomischeAfhankelijkheid(
-  alleenViaSamenOntzorgen: boolean,
   opdrachtgeversCount: number
 ): Pick<GezichtspuntBeoordeling, 'status' | 'toelichting' | 'mitigatie'> {
-  if (alleenViaSamenOntzorgen) {
+  if (opdrachtgeversCount <= 1) {
     return {
       status: 'AANDACHT',
-      toelichting: 'CZO werkt uitsluitend via SamenOntzorgen voor één instelling. Economische afhankelijkheid is een risicosignaal voor het Uber-toetskader.',
-      mitigatie: 'Actief coachen om ook buiten SamenOntzorgen opdrachten te verwerven.',
+      toelichting: 'CZO heeft in het afgelopen jaar bij 1 instelling gewerkt. Spreiding over meerdere opdrachtgevers is gewenst.',
+      mitigatie: 'Begeleiden naar een tweede opdrachtgever via de coöperatie.',
     }
   }
-  if (opdrachtgeversCount < 3) {
+  if (opdrachtgeversCount === 2) {
     return {
       status: 'AANDACHT',
-      toelichting: `CZO werkt voor ${opdrachtgeversCount} instelling(en). Spreiding is beperkt maar aanwezig.`,
+      toelichting: 'CZO werkt bij 2 instellingen. Spreiding is in opbouw; 3 of meer opdrachtgevers per jaar is het doel.',
     }
   }
   return {
     status: 'CONFORM',
-    toelichting: `CZO werkt voor ${opdrachtgeversCount} verschillende instellingen. Geen economische afhankelijkheid.`,
+    toelichting: `CZO heeft in het afgelopen jaar voor ${opdrachtgeversCount} verschillende instellingen gewerkt. Geen economische afhankelijkheid.`,
   }
 }
 

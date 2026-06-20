@@ -63,13 +63,13 @@ describe('berekenGezichtspunten', () => {
     expect(['AANDACHT', 'RISICO']).toContain(result.totaalStatus)
   })
 
-  it('geeft RISICO als KvK ontbreekt en CZO alleen via SO werkt', () => {
-    const czoZonderKvK: CZO = { ...baseCZO, kvkNummer: null }
+  it('geeft RISICO als KvK én eigen tarief ontbreken', () => {
+    const czoZonderKvK: CZO = { ...baseCZO, kvkNummer: null, eigenTarief: null }
     const result = berekenGezichtspunten({
       czo: czoZonderKvK,
       documenten: [geldigeBAV],
       opdrachten: [kortOpdracht],
-      opdrachtgeversCount: 1,
+      opdrachtgeversCount: 3,
     })
     // ondernemerschap ZWAAR RISICO → totaal RISICO
     expect(result.totaalStatus).toBe('RISICO')

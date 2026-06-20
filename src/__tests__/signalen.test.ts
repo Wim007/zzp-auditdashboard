@@ -39,7 +39,7 @@ describe('berekenAandachtspunten', () => {
       zorginstellingId: 'inst-a',
       zorginstellingNaam: 'Instelling A',
     })
-    expect(punten.some(p => p.type === 'ALLEEN_VIA_SO')).toBe(true)
+    expect(punten.some(p => p.type === 'WEINIG_OPDRACHTGEVERS')).toBe(true)
   })
 
   it('detecteert ontbrekend ondernemersdossier (geen KvK)', () => {
@@ -63,7 +63,7 @@ describe('berekenVisueleStatusVoorInstelling', () => {
   })
 
   it('geeft AANDACHT als er een open AANDACHT-punt is', () => {
-    const punten = [{ id: '1', type: 'ALLEEN_VIA_SO' as const, omschrijving: '', status: 'OPEN' as const, ernst: 'AANDACHT' as const }]
+    const punten = [{ id: '1', type: 'WEINIG_OPDRACHTGEVERS' as const, omschrijving: '', status: 'OPEN' as const, ernst: 'AANDACHT' as const }]
     expect(berekenVisueleStatusVoorInstelling(punten)).toBe('AANDACHT')
   })
 

@@ -5,6 +5,7 @@ import type { CZO, Document, Kwartaalaudit, Opdracht, Toegangslog, Zorginstellin
 
 const LINDEN_ID = 'inst-linden'
 const ANDERE_ID = 'inst-andere'
+const DERDE_ID = 'inst-derde'
 
 const zorginstellingen: Zorginstelling[] = [
   {
@@ -20,6 +21,13 @@ const zorginstellingen: Zorginstelling[] = [
     contactEmail: 'inkoop@zorggroepnoord.nl',
     contactTelefoon: '030-9876543',
     adres: 'Noordplein 5, 3500 CD Utrecht',
+  },
+  {
+    id: DERDE_ID,
+    naam: 'Stichting Zorghart',
+    contactEmail: 'planning@zorghart.nl',
+    contactTelefoon: '040-5554433',
+    adres: 'Hartkade 8, 5600 AA Eindhoven',
   },
 ]
 
@@ -191,7 +199,29 @@ const opdrachten: Opdracht[] = [
     afdeling: 'Wijk Zuid',
     omschrijving: 'Persoonlijke verzorging',
   },
-  // czo-6: uitsluitend Linden (alleen-via-SO)
+  // czo-1: ook opdracht bij derde instelling → 3 opdrachtgevers → CONFORM
+  {
+    id: 'opd-9',
+    czoId: 'czo-1',
+    zorginstellingId: DERDE_ID,
+    zorginstellingNaam: 'Stichting Zorghart',
+    startdatum: datumRelatiefAan(-90),
+    einddatum: datumRelatiefAan(-20),
+    afdeling: 'Dagopvang',
+    omschrijving: 'Begeleiding cliënten dagopvang',
+  },
+  // czo-4: ook opdracht bij derde instelling → 3 opdrachtgevers → CONFORM
+  {
+    id: 'opd-10',
+    czoId: 'czo-4',
+    zorginstellingId: DERDE_ID,
+    zorginstellingNaam: 'Stichting Zorghart',
+    startdatum: datumRelatiefAan(-60),
+    einddatum: datumRelatiefAan(-10),
+    afdeling: 'Verpleegafdeling',
+    omschrijving: 'Verpleegkundige zorg',
+  },
+  // czo-6: Linden
   {
     id: 'opd-8',
     czoId: 'czo-6',
@@ -287,9 +317,11 @@ let logTeller = 0
 // ─── Helper ─────────────────────────────────────────────────────────────────
 
 function opdrachtgeversCountVoorCZO(czoId: string): number {
+  const eenJaarGeleden = new Date()
+  eenJaarGeleden.setFullYear(eenJaarGeleden.getFullYear() - 1)
   const uniek = new Set(
     opdrachten
-      .filter((o) => o.czoId === czoId)
+      .filter((o) => o.czoId === czoId && new Date(o.startdatum) >= eenJaarGeleden)
       .map((o) => o.zorginstellingId)
   )
   return uniek.size

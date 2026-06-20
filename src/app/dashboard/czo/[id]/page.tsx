@@ -136,10 +136,10 @@ export default async function CZODetailPage({ params }: { params: { id: string }
                 ontbreektTekst="Niet ingesteld"
               />
               <OndernemersRij
-                label="Spreiding opdrachtgevers"
-                aanwezig={!alleenViaSO}
+                label="Opdrachtgevers (afgelopen jaar)"
+                aanwezig={opdrachtgeversCount >= 3}
                 waarde={`${opdrachtgeversCount} instelling${opdrachtgeversCount !== 1 ? 'en' : ''}`}
-                ontbreektTekst="Alleen via SamenOntzorgen"
+                ontbreektTekst={`${opdrachtgeversCount} instelling${opdrachtgeversCount !== 1 ? 'en' : ''} — doel is 3`}
                 ontbreektKleur="amber"
               />
               {ondernemersDocs.map((doc) => <DocRij key={doc.id} doc={doc} />)}

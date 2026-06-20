@@ -60,7 +60,7 @@ export default async function DashboardPage() {
       czo,
       visueleStatus: score.totaalStatus,
       aantalOpdrachten: (opdrachtenPerCZO[czo.id] ?? []).filter(o => o.zorginstellingId === zorginstellingId).length,
-      alleenViaSamenOntzorgen: (opdrachtgeversCountPerCZO[czo.id] ?? 1) <= 1,
+      opdrachtgeversCount: opdrachtgeversCountPerCZO[czo.id] ?? 1,
     }
   })
 
@@ -118,7 +118,7 @@ export default async function DashboardPage() {
           </div>
 
           <div className="divide-y divide-gray-50">
-            {czoSamenvattingen.map(({ czo, visueleStatus, aantalOpdrachten, alleenViaSamenOntzorgen }) => (
+            {czoSamenvattingen.map(({ czo, visueleStatus, aantalOpdrachten, opdrachtgeversCount }) => (
               <Link
                 key={czo.id}
                 href={`/dashboard/czo/${czo.id}`}
@@ -128,9 +128,6 @@ export default async function DashboardPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-gray-900">{czo.bedrijfsnaam ?? czo.naam}</span>
-                    {alleenViaSamenOntzorgen && (
-                      <span className="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded">Alleen via SO</span>
-                    )}
                     {czo.status === 'HOLD' && (
                       <span className="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">Hold</span>
                     )}
