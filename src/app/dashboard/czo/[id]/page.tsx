@@ -98,7 +98,7 @@ export default async function CZODetailPage({ params }: { params: { id: string }
         {/* Systeem-compliance melding */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-800 mb-6">
           Status als lid: <span className="font-medium">{czo.status === 'ACTIEF' ? 'Actief — volledig compliant' : 'Hold — niet actief als lid'}</span>.
-          Het systeem kan een niet-compliant CZO niet inroosteren.
+          Het systeem kan een niet-compliant lid niet activeren.
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 mb-8">

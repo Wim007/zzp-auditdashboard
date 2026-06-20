@@ -70,11 +70,11 @@ export function berekenGezichtspunten(input: GezichtspuntenInput): Gezichtspunte
     },
     {
       id: 'werktijden',
-      naam: 'Werktijden en planning',
-      omschrijving: 'De CZO kiest zelf welke opdrachten hij/zij aanneemt; er is geen verplichting beschikbaar te zijn.',
+      naam: 'Werktijden en eigen agenda',
+      omschrijving: 'De CZO kiest zelf welke opdrachten hij/zij aanneemt; er is geen verplichting een opdracht te accepteren.',
       gewicht: 'NORMAAL',
       status: 'CONFORM',
-      toelichting: 'CZO\'s accepteren opdrachten vrijwillig via het platform; geen vaste diensten verplicht.',
+      toelichting: "CZO's accepteren opdrachten op vrijwillige basis via de coöperatie; geen vaste diensten verplicht.",
     },
     {
       id: 'eigen-middelen',
