@@ -25,6 +25,8 @@ export interface CZO {
   functie?: string | null
   email?: string | null
   telefoon?: string | null
+  website?: string | null
+  linkedinUrl?: string | null
 }
 
 export interface Opdracht {

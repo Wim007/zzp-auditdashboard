@@ -140,7 +140,7 @@ function bouwPaginaInhoud(params: {
             React.createElement(Text, { style: stijlen.kolom3 }, 'Geldig t/m'),
           ),
           ...dossier.documenten
-            .filter(d => ['KVK', 'BAV', 'AOV'].includes(d.type))
+            .filter(d => ['KVK', 'BAV'].includes(d.type))
             .map(doc =>
               React.createElement(View, { key: `ond-${doc.id}`, style: stijlen.tabelRij },
                 React.createElement(Text, { style: stijlen.kolom1 }, documentTypeLabel(doc.type)),

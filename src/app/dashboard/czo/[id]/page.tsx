@@ -14,7 +14,7 @@ import { nl } from 'date-fns/locale'
 
 const docTypeLabel: Record<string, string> = {
   DIPLOMA: 'Diploma', BIG: 'BIG-registratie', VOG: 'VOG',
-  BAV: 'Beroepsaansprakelijkheids­verzekering', AOV: 'Arbeidsongeschiktheids­verzekering',
+  BAV: 'Beroepsaansprakelijkheids­verzekering',
   WKKGZ: 'Wkkgz-klachtaansluiting', SCHOLING: 'Scholing', KVK: 'KvK-uittreksel',
 }
 
@@ -67,7 +67,7 @@ export default async function CZODetailPage({ params }: { params: { id: string }
   const score = berekenGezichtspunten({ czo, documenten, opdrachten, opdrachtgeversCount })
 
   const bekwaamheidsDocs = documenten.filter(d => ['DIPLOMA', 'BIG', 'VOG', 'WKKGZ', 'SCHOLING'].includes(d.type))
-  const ondernemersDocs = documenten.filter(d => ['KVK', 'BAV', 'AOV'].includes(d.type))
+  const ondernemersDocs = documenten.filter(d => ['KVK', 'BAV'].includes(d.type))
 
   const alleenViaSO = opdrachtgeversCount <= 1
 
@@ -96,10 +96,32 @@ export default async function CZODetailPage({ params }: { params: { id: string }
         </div>
 
         {/* Systeem-compliance melding */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-800 mb-6">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-800 mb-4">
           Status als lid: <span className="font-medium">{czo.status === 'ACTIEF' ? 'Actief — volledig compliant' : 'Hold — niet actief als lid'}</span>.
           Het systeem kan een niet-compliant lid niet activeren.
         </div>
+
+        {/* Online aanwezigheid */}
+        {(czo.website || czo.linkedinUrl) && (
+          <div className="flex items-center gap-4 mb-6 text-sm">
+            {czo.website && (
+              <a href={czo.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-blue-600 hover:underline">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
+                </svg>
+                Website
+              </a>
+            )}
+            {czo.linkedinUrl && (
+              <a href={czo.linkedinUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-blue-600 hover:underline">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76zm13.5 11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.76 1.38-1.56 2.84-1.56 3.04 0 3.6 2 3.6 4.59v5.61z" />
+                </svg>
+                LinkedIn
+              </a>
+            )}
+          </div>
+        )}
 
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Bekwaamheidsdossier */}

@@ -34,6 +34,8 @@ const czos: CZO[] = [
     eigenTarief: 48,
     functie: 'Verzorgende IG niveau 3',
     email: 'f.youssef@zzpzorg.nl',
+    website: 'https://youssefzorgverlening.nl',
+    linkedinUrl: 'https://linkedin.com/in/fatima-youssef-zorg',
   },
   {
     id: 'czo-2',
@@ -45,6 +47,8 @@ const czos: CZO[] = [
     eigenTarief: 52,
     functie: 'Verzorgende IG niveau 3',
     email: 'j.devries@zzpzorg.nl',
+    website: 'https://devriestuiszorg.nl',
+    linkedinUrl: 'https://linkedin.com/in/jan-de-vries-thuiszorg',
   },
   {
     id: 'czo-3',
@@ -56,6 +60,8 @@ const czos: CZO[] = [
     eigenTarief: 41,
     functie: 'Helpende niveau 2',
     email: 'm.bakker@zzpzorg.nl',
+    website: 'https://bakkerzorgenwelzijn.nl',
+    linkedinUrl: null,
   },
   {
     id: 'czo-4',
@@ -67,17 +73,21 @@ const czos: CZO[] = [
     eigenTarief: 63,
     functie: 'Verpleegkundige niveau 5',
     email: 'a.khalil@zzpzorg.nl',
+    website: 'https://khalilverpleging.nl',
+    linkedinUrl: 'https://linkedin.com/in/ahmed-khalil-verpleging',
   },
   {
     id: 'czo-5',
     naam: 'Sandra Hoek',
     bedrijfsnaam: 'Hoek Zorgdiensten',
     bigNummer: '59005678905',
-    kvkNummer: null, // aandachtspunt: geen KvK
+    kvkNummer: '32109876',
     status: 'ACTIEF',
     eigenTarief: 45,
     functie: 'Verzorgende IG niveau 3',
     email: 's.hoek@zzpzorg.nl',
+    website: 'https://hoekzorgdiensten.nl',
+    linkedinUrl: null,
   },
   {
     id: 'czo-6',
@@ -89,6 +99,8 @@ const czos: CZO[] = [
     eigenTarief: 47,
     functie: 'Verzorgende IG niveau 3',
     email: 'p.smits@zzpzorg.nl',
+    website: null,
+    linkedinUrl: 'https://linkedin.com/in/peter-smits-zorg',
   },
 ]
 
@@ -200,7 +212,6 @@ const documenten: Document[] = [
   { id: 'd1-2', czoId: 'czo-1', type: 'BIG', status: 'GELDIG', omschrijving: 'BIG-registratie verpleegkundige', afgiftedatum: '2022-03-01', vervaldatum: '2027-03-01' },
   { id: 'd1-3', czoId: 'czo-1', type: 'VOG', status: 'GELDIG', omschrijving: 'VOG screeningsprofiel Zorg', afgiftedatum: '2024-01-10', vervaldatum: '2026-01-10' },
   { id: 'd1-4', czoId: 'czo-1', type: 'BAV', status: 'GELDIG', omschrijving: 'Beroepsaansprakelijkheidsverzekering', afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01' },
-  { id: 'd1-5', czoId: 'czo-1', type: 'AOV', status: 'GELDIG', omschrijving: 'Arbeidsongeschiktheidsverzekering', afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01' },
   { id: 'd1-6', czoId: 'czo-1', type: 'WKKGZ', status: 'GELDIG', omschrijving: 'Aansluiting Klachtenportaal Zorg', afgiftedatum: '2023-06-01', vervaldatum: null },
   { id: 'd1-7', czoId: 'czo-1', type: 'KVK', status: 'GELDIG', omschrijving: 'KvK-uittreksel', afgiftedatum: '2024-05-01', vervaldatum: null },
   { id: 'd1-8', czoId: 'czo-1', type: 'SCHOLING', status: 'GELDIG', omschrijving: 'BHV-certificaat', afgiftedatum: '2024-03-15', vervaldatum: '2026-03-15' },
@@ -210,7 +221,6 @@ const documenten: Document[] = [
   { id: 'd2-2', czoId: 'czo-2', type: 'BIG', status: 'GELDIG', omschrijving: 'BIG-registratie', afgiftedatum: '2021-09-01', vervaldatum: '2026-09-01' },
   { id: 'd2-3', czoId: 'czo-2', type: 'VOG', status: 'GELDIG', omschrijving: 'VOG screeningsprofiel Zorg', afgiftedatum: '2023-11-01', vervaldatum: '2025-11-01' },
   { id: 'd2-4', czoId: 'czo-2', type: 'BAV', status: 'GELDIG', omschrijving: 'BAV Centraal Beheer', afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01' },
-  { id: 'd2-5', czoId: 'czo-2', type: 'AOV', status: 'GELDIG', omschrijving: 'AOV Zorgpolis', afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01' },
   { id: 'd2-6', czoId: 'czo-2', type: 'WKKGZ', status: 'GELDIG', omschrijving: 'Aansluiting SKJ', afgiftedatum: '2023-01-01' },
   { id: 'd2-7', czoId: 'czo-2', type: 'KVK', status: 'GELDIG', omschrijving: 'KvK-uittreksel', afgiftedatum: '2024-04-01' },
   { id: 'd2-8', czoId: 'czo-2', type: 'SCHOLING', status: 'GELDIG', omschrijving: 'Medicatieveiligheid', afgiftedatum: '2024-02-10', vervaldatum: '2026-02-10' },
@@ -220,7 +230,6 @@ const documenten: Document[] = [
   { id: 'd3-2', czoId: 'czo-3', type: 'BIG', status: 'GELDIG', omschrijving: 'BIG-registratie', afgiftedatum: '2020-06-01', vervaldatum: '2025-06-01' },
   { id: 'd3-3', czoId: 'czo-3', type: 'VOG', status: 'GELDIG', omschrijving: 'VOG screeningsprofiel Zorg', afgiftedatum: '2024-02-01', vervaldatum: '2026-02-01' },
   { id: 'd3-4', czoId: 'czo-3', type: 'BAV', status: 'AANDACHT', omschrijving: 'BAV loopt binnenkort af', afgiftedatum: '2023-07-01', vervaldatum: '2025-07-15' },
-  { id: 'd3-5', czoId: 'czo-3', type: 'AOV', status: 'GELDIG', omschrijving: 'AOV', afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01' },
   { id: 'd3-6', czoId: 'czo-3', type: 'WKKGZ', status: 'GELDIG', omschrijving: 'Klachtenportaal Zorg', afgiftedatum: '2023-01-01' },
   { id: 'd3-7', czoId: 'czo-3', type: 'KVK', status: 'GELDIG', omschrijving: 'KvK-uittreksel', afgiftedatum: '2024-03-01' },
   { id: 'd3-8', czoId: 'czo-3', type: 'SCHOLING', status: 'GELDIG', omschrijving: 'Hygiëne en infectiepreventie', afgiftedatum: '2024-01-15', vervaldatum: '2026-01-15' },
@@ -230,26 +239,23 @@ const documenten: Document[] = [
   { id: 'd4-2', czoId: 'czo-4', type: 'BIG', status: 'GELDIG', omschrijving: 'BIG-registratie verpleegkundige', afgiftedatum: '2022-01-01', vervaldatum: '2027-01-01' },
   { id: 'd4-3', czoId: 'czo-4', type: 'VOG', status: 'GELDIG', omschrijving: 'VOG screeningsprofiel Zorg', afgiftedatum: '2024-03-01', vervaldatum: '2026-03-01' },
   { id: 'd4-4', czoId: 'czo-4', type: 'BAV', status: 'GELDIG', omschrijving: 'BAV Beroepsaansprakelijkheid', afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01' },
-  { id: 'd4-5', czoId: 'czo-4', type: 'AOV', status: 'GELDIG', omschrijving: 'AOV compleet', afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01' },
   { id: 'd4-6', czoId: 'czo-4', type: 'WKKGZ', status: 'GELDIG', omschrijving: 'Geschilleninstantie Zorg', afgiftedatum: '2023-06-01' },
   { id: 'd4-7', czoId: 'czo-4', type: 'KVK', status: 'GELDIG', omschrijving: 'KvK-uittreksel', afgiftedatum: '2024-05-01' },
   { id: 'd4-8', czoId: 'czo-4', type: 'SCHOLING', status: 'GELDIG', omschrijving: 'Wondverzorging gevorderd', afgiftedatum: '2024-04-01', vervaldatum: '2026-04-01' },
 
-  // czo-5: ontbreekt KvK (op CZO-niveau) + geen AOV (aandachtspunt)
+  // czo-5: volledig dossier
   { id: 'd5-1', czoId: 'czo-5', type: 'DIPLOMA', status: 'GELDIG', omschrijving: 'MBO Verzorgende IG niveau 3', afgiftedatum: '2017-06-15' },
   { id: 'd5-2', czoId: 'czo-5', type: 'BIG', status: 'GELDIG', omschrijving: 'BIG-registratie', afgiftedatum: '2021-05-01', vervaldatum: '2026-05-01' },
   { id: 'd5-3', czoId: 'czo-5', type: 'VOG', status: 'GELDIG', omschrijving: 'VOG screeningsprofiel Zorg', afgiftedatum: '2024-01-01', vervaldatum: '2026-01-01' },
   { id: 'd5-4', czoId: 'czo-5', type: 'BAV', status: 'GELDIG', omschrijving: 'BAV aanwezig', afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01' },
-  { id: 'd5-5', czoId: 'czo-5', type: 'AOV', status: 'ONTBREEKT', omschrijving: 'AOV niet geregistreerd' },
   { id: 'd5-6', czoId: 'czo-5', type: 'WKKGZ', status: 'GELDIG', omschrijving: 'Klachtenportaal Zorg', afgiftedatum: '2023-01-01' },
-  // KVK ontbreekt (ook geen kvkNummer op CZO-object)
+  { id: 'd5-7', czoId: 'czo-5', type: 'KVK', status: 'GELDIG', omschrijving: 'KvK-uittreksel', afgiftedatum: '2024-06-01' },
 
   // czo-6: volledig dossier
   { id: 'd6-1', czoId: 'czo-6', type: 'DIPLOMA', status: 'GELDIG', omschrijving: 'MBO Verzorgende IG niveau 3', afgiftedatum: '2014-06-15' },
   { id: 'd6-2', czoId: 'czo-6', type: 'BIG', status: 'GELDIG', omschrijving: 'BIG-registratie', afgiftedatum: '2020-08-01', vervaldatum: '2025-08-01' },
   { id: 'd6-3', czoId: 'czo-6', type: 'VOG', status: 'GELDIG', omschrijving: 'VOG screeningsprofiel Zorg', afgiftedatum: '2023-09-01', vervaldatum: '2025-09-01' },
   { id: 'd6-4', czoId: 'czo-6', type: 'BAV', status: 'GELDIG', omschrijving: 'BAV', afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01' },
-  { id: 'd6-5', czoId: 'czo-6', type: 'AOV', status: 'GELDIG', omschrijving: 'AOV', afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01' },
   { id: 'd6-6', czoId: 'czo-6', type: 'WKKGZ', status: 'GELDIG', omschrijving: 'Klachtenportaal Zorg', afgiftedatum: '2023-01-01' },
   { id: 'd6-7', czoId: 'czo-6', type: 'KVK', status: 'GELDIG', omschrijving: 'KvK-uittreksel', afgiftedatum: '2024-02-01' },
   { id: 'd6-8', czoId: 'czo-6', type: 'SCHOLING', status: 'GELDIG', omschrijving: 'Valpreventie', afgiftedatum: '2024-01-10', vervaldatum: '2026-01-10' },

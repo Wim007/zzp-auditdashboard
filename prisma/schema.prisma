@@ -31,6 +31,8 @@ model CZO {
   functie     String?
   email       String?
   telefoon    String?
+  website     String?
+  linkedinUrl String?
   opdrachten  Opdracht[]
   documenten  Document[]
   createdAt   DateTime    @default(now())

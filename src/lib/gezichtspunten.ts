@@ -26,7 +26,6 @@ export function berekenGezichtspunten(input: GezichtspuntenInput): Gezichtspunte
 
   const heeftKvK = Boolean(czo.kvkNummer && czo.kvkNummer.length > 0)
   const heeftBAV = documenten.some((d) => d.type === 'BAV' && d.status === 'GELDIG')
-  const heeftAOV = documenten.some((d) => d.type === 'AOV' && d.status === 'GELDIG')
   const heeftEigenTarief = czo.eigenTarief != null && Number(czo.eigenTarief) > 0
   const alleenViaSamenOntzorgen = opdrachtgeversCount <= 1
 
@@ -90,7 +89,7 @@ export function berekenGezichtspunten(input: GezichtspuntenInput): Gezichtspunte
       naam: 'Financieel risico',
       omschrijving: 'De CZO draagt eigen financieel risico: geen gewaarborgd inkomen bij ziekte of geen opdrachten, eigen beroepsaansprakelijkheid.',
       gewicht: 'NORMAAL',
-      ...beoordeelFinancieelRisico(heeftBAV, heeftAOV),
+      ...beoordeelFinancieelRisico(heeftBAV),
     },
     {
       id: 'ondernemerschap',
@@ -156,26 +155,18 @@ function beoordeelGezag(
 }
 
 function beoordeelFinancieelRisico(
-  heeftBAV: boolean,
-  heeftAOV: boolean
+  heeftBAV: boolean
 ): Pick<GezichtspuntBeoordeling, 'status' | 'toelichting' | 'mitigatie'> {
-  if (!heeftBAV && !heeftAOV) {
+  if (!heeftBAV) {
     return {
       status: 'RISICO',
-      toelichting: 'Geen BAV en geen AOV geregistreerd. Financieel risico is niet aantoonbaar gedragen.',
-      mitigatie: 'Verlang bewijs van geldige BAV en AOV voordat inzet plaatsvindt.',
-    }
-  }
-  if (!heeftBAV || !heeftAOV) {
-    return {
-      status: 'AANDACHT',
-      toelichting: `Ontbrekend: ${!heeftBAV ? 'BAV' : ''}${!heeftBAV && !heeftAOV ? ' en ' : ''}${!heeftAOV ? 'AOV' : ''}. Financieel risico is gedeeltelijk aantoonbaar.`,
-      mitigatie: 'Aanvullen met ontbrekende verzekering(en).',
+      toelichting: 'Geen BAV geregistreerd. Beroepsaansprakelijkheid is niet aantoonbaar gedekt.',
+      mitigatie: 'Verlang bewijs van geldige beroepsaansprakelijkheidsverzekering.',
     }
   }
   return {
     status: 'CONFORM',
-    toelichting: 'Geldige BAV en AOV aanwezig. CZO draagt eigen financieel risico.',
+    toelichting: 'Geldige BAV aanwezig. CZO draagt eigen beroepsaansprakelijkheid.',
   }
 }
 

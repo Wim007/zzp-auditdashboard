@@ -15,10 +15,6 @@ const geldigeBAV: Document = {
   id: 'doc-bav', czoId: 'test-1', type: 'BAV', status: 'GELDIG',
   afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01',
 }
-const geldigeAOV: Document = {
-  id: 'doc-aov', czoId: 'test-1', type: 'AOV', status: 'GELDIG',
-  afgiftedatum: '2024-01-01', vervaldatum: '2025-01-01',
-}
 
 const kortOpdracht: Opdracht = {
   id: 'opd-1', czoId: 'test-1', zorginstellingId: 'inst-1',
@@ -39,7 +35,7 @@ describe('berekenGezichtspunten', () => {
   it('geeft VEILIG voor een volledig compliant CZO met meerdere opdrachtgevers', () => {
     const result = berekenGezichtspunten({
       czo: baseCZO,
-      documenten: [geldigeBAV, geldigeAOV],
+      documenten: [geldigeBAV],
       opdrachten: [kortOpdracht],
       opdrachtgeversCount: 3,
     })
@@ -49,7 +45,7 @@ describe('berekenGezichtspunten', () => {
   it('geeft AANDACHT als CZO alleen via SamenOntzorgen werkt', () => {
     const result = berekenGezichtspunten({
       czo: baseCZO,
-      documenten: [geldigeBAV, geldigeAOV],
+      documenten: [geldigeBAV],
       opdrachten: [kortOpdracht],
       opdrachtgeversCount: 1, // alleen via SO
     })
@@ -59,7 +55,7 @@ describe('berekenGezichtspunten', () => {
   it('geeft AANDACHT bij een langlopende opdracht (>8 weken)', () => {
     const result = berekenGezichtspunten({
       czo: baseCZO,
-      documenten: [geldigeBAV, geldigeAOV],
+      documenten: [geldigeBAV],
       opdrachten: [langOpdracht],
       opdrachtgeversCount: 3,
     })
@@ -71,7 +67,7 @@ describe('berekenGezichtspunten', () => {
     const czoZonderKvK: CZO = { ...baseCZO, kvkNummer: null }
     const result = berekenGezichtspunten({
       czo: czoZonderKvK,
-      documenten: [geldigeBAV, geldigeAOV],
+      documenten: [geldigeBAV],
       opdrachten: [kortOpdracht],
       opdrachtgeversCount: 1,
     })
@@ -79,7 +75,7 @@ describe('berekenGezichtspunten', () => {
     expect(result.totaalStatus).toBe('RISICO')
   })
 
-  it('geeft RISICO als BAV én AOV ontbreken', () => {
+  it('geeft RISICO als BAV ontbreekt', () => {
     const result = berekenGezichtspunten({
       czo: baseCZO,
       documenten: [],
@@ -92,7 +88,7 @@ describe('berekenGezichtspunten', () => {
   it('bevat altijd 9 gezichtspunten', () => {
     const result = berekenGezichtspunten({
       czo: baseCZO,
-      documenten: [geldigeBAV, geldigeAOV],
+      documenten: [geldigeBAV],
       opdrachten: [kortOpdracht],
       opdrachtgeversCount: 3,
     })
