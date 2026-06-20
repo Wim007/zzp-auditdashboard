@@ -101,28 +101,6 @@ export default async function CZODetailPage({ params }: { params: { id: string }
           Het systeem kan een niet-compliant lid niet activeren.
         </div>
 
-        {/* Online aanwezigheid */}
-        {(czo.website || czo.linkedinUrl) && (
-          <div className="flex items-center gap-4 mb-6 text-sm">
-            {czo.website && (
-              <a href={czo.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-blue-600 hover:underline">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
-                </svg>
-                Website
-              </a>
-            )}
-            {czo.linkedinUrl && (
-              <a href={czo.linkedinUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-blue-600 hover:underline">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76zm13.5 11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.88v1.36h.04c.4-.76 1.38-1.56 2.84-1.56 3.04 0 3.6 2 3.6 4.59v5.61z" />
-                </svg>
-                LinkedIn
-              </a>
-            )}
-          </div>
-        )}
-
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Bekwaamheidsdossier */}
           <section className="bg-white rounded-xl border border-gray-200 overflow-hidden">
@@ -144,30 +122,43 @@ export default async function CZODetailPage({ params }: { params: { id: string }
               <h2 className="font-semibold text-gray-900 text-sm">Ondernemerschapsdossier</h2>
               <p className="text-xs text-gray-500 mt-0.5">Is deze persoon echt zelfstandig? (DBA)</p>
             </div>
-            <div className="p-5 space-y-3">
-              <div className="grid grid-cols-2 gap-2 text-sm pb-3 border-b border-gray-100">
-                <div>
-                  <p className="text-xs text-gray-500">KvK-nummer</p>
-                  <p className="font-medium">{czo.kvkNummer ?? <span className="text-red-600">Ontbreekt</span>}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Eigen tarief</p>
-                  <p className="font-medium">{czo.eigenTarief ? `€ ${Number(czo.eigenTarief)}/uur` : <span className="text-amber-600">Niet ingesteld</span>}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Opdrachtgevers</p>
-                  <p className="font-medium">{opdrachtgeversCount} instelling{opdrachtgeversCount !== 1 ? 'en' : ''}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Spreiding</p>
-                  {alleenViaSO
-                    ? <p className="font-medium text-amber-600">Alleen via SO</p>
-                    : <p className="font-medium text-green-700">Gespreid</p>}
-                </div>
-              </div>
-              <div className="divide-y divide-gray-50">
-                {ondernemersDocs.map((doc) => <DocRij key={doc.id} doc={doc} />)}
-              </div>
+            <div className="divide-y divide-gray-50">
+              <OndernemersRij
+                label="KvK-registratie"
+                aanwezig={!!czo.kvkNummer}
+                waarde={czo.kvkNummer ?? undefined}
+                ontbreektTekst="Niet geregistreerd"
+              />
+              <OndernemersRij
+                label="Eigen tarief"
+                aanwezig={!!czo.eigenTarief}
+                waarde={czo.eigenTarief ? `€ ${Number(czo.eigenTarief)}/uur` : undefined}
+                ontbreektTekst="Niet ingesteld"
+              />
+              <OndernemersRij
+                label="Spreiding opdrachtgevers"
+                aanwezig={!alleenViaSO}
+                waarde={`${opdrachtgeversCount} instelling${opdrachtgeversCount !== 1 ? 'en' : ''}`}
+                ontbreektTekst="Alleen via SamenOntzorgen"
+                ontbreektKleur="amber"
+              />
+              {ondernemersDocs.map((doc) => <DocRij key={doc.id} doc={doc} />)}
+              <OndernemersRij
+                label="Website"
+                aanwezig={!!czo.website}
+                waarde={czo.website ?? undefined}
+                link={czo.website ?? undefined}
+                ontbreektTekst="Niet geregistreerd"
+                ontbreektKleur="grijs"
+              />
+              <OndernemersRij
+                label="LinkedIn-profiel"
+                aanwezig={!!czo.linkedinUrl}
+                waarde={czo.linkedinUrl ? 'Profiel bekijken' : undefined}
+                link={czo.linkedinUrl ?? undefined}
+                ontbreektTekst="Niet geregistreerd"
+                ontbreektKleur="grijs"
+              />
             </div>
           </section>
         </div>
@@ -228,6 +219,43 @@ function DocRij({ doc }: { doc: Document }) {
         )}
         <DocumentStatusBadge status={doc.status} />
       </div>
+    </div>
+  )
+}
+
+function OndernemersRij({
+  label, aanwezig, waarde, link, ontbreektTekst, ontbreektKleur = 'amber',
+}: {
+  label: string
+  aanwezig: boolean
+  waarde?: string
+  link?: string
+  ontbreektTekst: string
+  ontbreektKleur?: 'amber' | 'rood' | 'grijs'
+}) {
+  const ontbreektClass = ontbreektKleur === 'rood' ? 'text-red-600' : ontbreektKleur === 'grijs' ? 'text-gray-400' : 'text-amber-600'
+  return (
+    <div className="flex items-center justify-between px-5 py-3 text-sm">
+      <span className="text-gray-600">{label}</span>
+      {aanwezig ? (
+        link ? (
+          <a href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-green-700 font-medium hover:underline">
+            <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+            </svg>
+            {waarde}
+          </a>
+        ) : (
+          <span className="flex items-center gap-1 text-green-700 font-medium">
+            <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+            </svg>
+            {waarde}
+          </span>
+        )
+      ) : (
+        <span className={`${ontbreektClass}`}>{ontbreektTekst}</span>
+      )}
     </div>
   )
 }
