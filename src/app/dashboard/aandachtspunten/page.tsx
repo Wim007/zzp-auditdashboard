@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { adapter } from '@/lib/adapters'
 import { berekenAandachtspunten } from '@/lib/signalen'
 import { Navigatie } from '@/components/ui/Navigatie'
+import { VervangersKnop } from '@/components/VervangersKnop'
 import type { Aandachtspunt } from '@/types'
 
 const typeLabels: Record<Aandachtspunt['type'], string> = {
@@ -99,14 +100,19 @@ function Groep({ titel, punten, kleur }: { titel: string; punten: Aandachtspunt[
                   <p className="text-xs text-gray-500 mt-1">CZO: {p.czoNaam}</p>
                 )}
               </div>
-              {p.czoId && (
-                <a
-                  href={`/dashboard/czo/${p.czoId}`}
-                  className="flex-shrink-0 text-xs bg-white border border-current px-2 py-1 rounded-md hover:bg-opacity-80 transition-colors"
-                >
-                  Dossier
-                </a>
-              )}
+              <div className="flex-shrink-0 flex items-center gap-2">
+                {p.type === 'ROOSTERVERVANGING' && p.czoNaam && (
+                  <VervangersKnop czoNaam={p.czoNaam} />
+                )}
+                {p.czoId && (
+                  <a
+                    href={`/dashboard/czo/${p.czoId}`}
+                    className="text-xs bg-white border border-current px-2 py-1 rounded-md hover:bg-opacity-80 transition-colors"
+                  >
+                    Dossier
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         ))}

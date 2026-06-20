@@ -117,6 +117,7 @@ export interface Aandachtspunt {
   omschrijving: string
   status: 'OPEN' | 'IN_BEHANDELING' | 'OPGELOST'
   ernst: VisueleStatus
+  metadata?: Record<string, unknown>
 }
 
 export interface InstellingOverzicht {

@@ -162,8 +162,8 @@ const opdrachten: Opdracht[] = [
     czoId: 'czo-3',
     zorginstellingId: LINDEN_ID,
     zorginstellingNaam: 'Thuiszorg De Linden B.V.',
-    startdatum: datumRelatiefAan(-70), // 70 dagen geleden = ~10 weken
-    einddatum: datumRelatiefAan(10),
+    startdatum: datumRelatiefAan(-49), // 49 dagen geleden = 7 weken — nog 7 dagen voor de grens
+    einddatum: datumRelatiefAan(20),
     afdeling: 'Afdeling B - Dementie',
     omschrijving: 'Dagactiviteiten begeleiding',
   },

@@ -2,6 +2,7 @@ import type { Aandachtspunt, CZO, Document, Kwartaalaudit, Opdracht, VisueleStat
 
 const ROOSTERVERVANGING_DREMPEL_WEKEN =
   parseInt(process.env.ROOSTERVERVANGING_DREMPEL_WEKEN ?? '8', 10)
+const WAARSCHUWING_WINDOW_DAGEN = 14
 
 /**
  * Berekent alle aandachtspunten voor één instelling op basis van haar CZO's en opdrachten.
@@ -38,19 +39,29 @@ export function berekenAandachtspunten(params: {
     )
     for (const opdracht of instellingOpdrachten) {
       const start = new Date(opdracht.startdatum)
-      const eind = opdracht.einddatum ? new Date(opdracht.einddatum) : new Date()
-      const weken = (eind.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7)
-      if (weken > ROOSTERVERVANGING_DREMPEL_WEKEN) {
+      const nu = new Date()
+      const deadline = new Date(start)
+      deadline.setDate(deadline.getDate() + ROOSTERVERVANGING_DREMPEL_WEKEN * 7)
+      const dagenResterend = Math.ceil((deadline.getTime() - nu.getTime()) / (1000 * 60 * 60 * 24))
+
+      if (dagenResterend <= WAARSCHUWING_WINDOW_DAGEN) {
+        const czoNaam = czo.bedrijfsnaam ?? czo.naam
+        const opdrachtgeverNaam = opdracht.zorginstellingNaam ?? zorginstellingNaam
+        const omschrijving = dagenResterend <= 0
+          ? `${czoNaam} heeft de maximale aaneengesloten periode (${ROOSTERVERVANGING_DREMPEL_WEKEN} weken) al overschreden bij ${opdrachtgeverNaam}. Direct actie vereist.`
+          : `Over ${dagenResterend} dag${dagenResterend === 1 ? '' : 'en'} bereikt ${czoNaam} de maximale aaneengesloten periode (${ROOSTERVERVANGING_DREMPEL_WEKEN} weken) bij ${opdrachtgeverNaam}. Plan een vervanger in.`
+
         punten.push({
           id: `roostervervanging-${czo.id}-${opdracht.id}`,
           type: 'ROOSTERVERVANGING',
           czoId: czo.id,
-          czoNaam: czo.naam,
+          czoNaam,
           zorginstellingId,
           zorginstellingNaam,
-          omschrijving: `${czo.naam} is al ${Math.round(weken)} weken aaneengesloten ingezet op afdeling "${opdracht.afdeling ?? 'onbekend'}". Drempel is ${ROOSTERVERVANGING_DREMPEL_WEKEN} weken.`,
+          omschrijving,
           status: 'OPEN',
-          ernst: 'AANDACHT',
+          ernst: dagenResterend <= 0 ? 'RISICO' : 'AANDACHT',
+          metadata: { opdrachtId: opdracht.id, dagenResterend, deadline: deadline.toISOString() },
         })
       }
     }
