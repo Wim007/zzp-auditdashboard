@@ -36,30 +36,18 @@ export default function LoginPage() {
             <p className="text-sm text-gray-500 mt-1">Veiligheidsdashboard</p>
           </div>
 
-          {/* Demo-knoppen — één klik toegang */}
-          <div className="mb-6 space-y-2">
-            <p className="text-xs text-gray-500 text-center mb-3">Klik om direct in te loggen als demo</p>
+          {/* Demo-knop — één klik toegang */}
+          <div className="mb-6">
             <button
               onClick={() => login('inkoop@delinden.nl', 'linden123')}
               disabled={bezig}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-3 text-sm transition-colors text-left flex items-center justify-between"
             >
               <span>
-                <span className="font-semibold">Zorginkoper</span>
+                <span className="font-semibold">Bekijk demo</span>
                 <span className="text-blue-200 ml-2 text-xs">Thuiszorg De Linden</span>
               </span>
               <span className="text-blue-200 text-xs">{bezig ? '...' : 'Inloggen →'}</span>
-            </button>
-            <button
-              onClick={() => login('beheerder@samenontzorgen.nl', 'beheerder123')}
-              disabled={bezig}
-              className="w-full bg-gray-800 hover:bg-gray-900 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-3 text-sm transition-colors text-left flex items-center justify-between"
-            >
-              <span>
-                <span className="font-semibold">Beheerder</span>
-                <span className="text-gray-400 ml-2 text-xs">SamenOntzorgen</span>
-              </span>
-              <span className="text-gray-400 text-xs">{bezig ? '...' : 'Inloggen →'}</span>
             </button>
           </div>
 
