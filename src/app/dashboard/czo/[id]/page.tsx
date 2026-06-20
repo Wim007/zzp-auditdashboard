@@ -95,7 +95,7 @@ export default async function CZODetailPage({ params }: { params: { id: string }
 
         {/* Systeem-compliance melding */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-800 mb-6">
-          Status in APM: <span className="font-medium">{czo.status === 'ACTIEF' ? 'Actief — volledig compliant' : 'Hold — niet inzetbaar'}</span>.
+          Platformstatus: <span className="font-medium">{czo.status === 'ACTIEF' ? 'Actief — volledig compliant' : 'Hold — niet inzetbaar'}</span>.
           Het systeem kan een niet-compliant CZO niet inroosteren.
         </div>
 
