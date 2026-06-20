@@ -76,9 +76,9 @@ function bouwPaginaInhoud(params: {
     React.createElement(View, { key: 'verklaring', style: stijlen.verklaring },
       React.createElement(Text, { style: { fontWeight: 'bold', marginBottom: 4 } }, 'Verklaring systeem-compliance'),
       React.createElement(Text, {},
-        'De onderstaande CZOs zijn op de hierboven vermelde datum actief in het planningssysteem van SamenOntzorgen. ' +
-        'Het systeem kan een niet-compliant CZO technisch niet inroosteren: pas als alle vereiste documenten zijn ingevoerd en gecontroleerd, ' +
-        'kan een CZO aan een instelling worden gekoppeld. De actieve platformstatus impliceert per definitie volledige compliance op het moment van genereren.'
+        'De onderstaande CZOs zijn op de hierboven vermelde datum actief als lid van SamenOntzorgen Cooperatie U.A. ' +
+        'De ledenadministratie kan een niet-compliant lid technisch niet activeren: pas als alle vereiste documenten zijn ingevoerd en gecontroleerd, ' +
+        'wordt een lid als actief geregistreerd. De actieve lidstatus impliceert per definitie volledige compliance op het moment van genereren.'
       ),
     ),
   ]
@@ -100,7 +100,7 @@ function bouwPaginaInhoud(params: {
           React.createElement(Text, { style: stijlen.waarde }, dossier.czo.kvkNummer ?? 'Niet geregistreerd'),
         ),
         React.createElement(View, { style: stijlen.rij },
-          React.createElement(Text, { style: stijlen.label }, 'Platformstatus:'),
+          React.createElement(Text, { style: stijlen.label }, 'Status als lid:'),
           React.createElement(Text, { style: [stijlen.badge, statusBadgeStijl(dossier.czo.status)] }, dossier.czo.status),
         ),
 

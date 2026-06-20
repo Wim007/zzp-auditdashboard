@@ -107,7 +107,7 @@ export default async function DashboardPage() {
         {/* Systeem-compliance uitleg */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm text-blue-800">
           <span className="font-medium">Systeemgarantie: </span>
-          Het planningssysteem van SamenOntzorgen kan een niet-compliant CZO technisch niet inroosteren. Een actieve status hier betekent per definitie volledige compliance op dit moment.
+          De ledenadministratie van SamenOntzorgen kan een niet-compliant lid technisch niet activeren. Een actieve lidstatus betekent per definitie volledige compliance op dit moment.
         </div>
 
         {/* CZO-lijst */}
