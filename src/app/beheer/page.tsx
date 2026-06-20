@@ -26,7 +26,7 @@ export default async function BeheerPage() {
 
         <div className="grid md:grid-cols-3 gap-4 mb-8">
           <div className="bg-white border border-gray-200 rounded-xl p-4">
-            <div className="text-xs text-gray-500">Instellingen</div>
+            <div className="text-xs text-gray-500">Opdrachtgevers</div>
             <div className="text-2xl font-bold text-gray-900 mt-1">{instellingen.length}</div>
           </div>
           <div className="bg-white border border-gray-200 rounded-xl p-4">
@@ -42,7 +42,7 @@ export default async function BeheerPage() {
         {/* Instellingen */}
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mb-8">
           <div className="px-6 py-4 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-900">Zorginstellingen</h2>
+            <h2 className="font-semibold text-gray-900">Opdrachtgevers</h2>
           </div>
           <div className="divide-y divide-gray-50">
             {instellingen.map((inst) => (

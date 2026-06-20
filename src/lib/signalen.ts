@@ -62,7 +62,7 @@ export function berekenAandachtspunten(params: {
         type: 'WEINIG_OPDRACHTGEVERS',
         czoId: czo.id,
         czoNaam: czo.bedrijfsnaam ?? czo.naam,
-        omschrijving: `${czo.bedrijfsnaam ?? czo.naam} heeft in het afgelopen jaar bij ${opdrachtgeversCount} instelling${opdrachtgeversCount === 1 ? '' : 'en'} gewerkt. Doel is 3 of meer opdrachtgevers per jaar.`,
+        omschrijving: `${czo.bedrijfsnaam ?? czo.naam} heeft in het afgelopen jaar bij ${opdrachtgeversCount} opdrachtgever${opdrachtgeversCount === 1 ? '' : 's'} gewerkt. Doel is 3 of meer opdrachtgevers per jaar.`,
         status: 'OPEN',
         ernst: 'AANDACHT',
       })

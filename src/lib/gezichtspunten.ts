@@ -47,14 +47,14 @@ export function berekenGezichtspunten(input: GezichtspuntenInput): Gezichtspunte
     {
       id: 'inbedding',
       naam: 'Inbedding in de organisatie',
-      omschrijving: 'De CZO werkt niet structureel ingebed in de organisatie van de instelling; opdrachten zijn tijdelijk en afgebakend.',
+      omschrijving: 'De CZO werkt niet structureel ingebed in de organisatie van de opdrachtgever; opdrachten zijn tijdelijk en afgebakend.',
       gewicht: 'ZWAAR',
       ...beoordeelInbedding(langeLoopendeOpdrachten),
     },
     {
       id: 'gezag',
       naam: 'Gezag en instructiebevoegdheid',
-      omschrijving: 'De CZO bepaalt zelfstandig hoe de werkzaamheden worden uitgevoerd; de instelling geeft geen hiërarchische instructies.',
+      omschrijving: 'De CZO bepaalt zelfstandig hoe de werkzaamheden worden uitgevoerd; de opdrachtgever geeft geen hiërarchische instructies.',
       gewicht: 'ZWAAR',
       ...beoordeelGezag(czo),
     },
@@ -77,10 +77,10 @@ export function berekenGezichtspunten(input: GezichtspuntenInput): Gezichtspunte
     {
       id: 'eigen-middelen',
       naam: 'Eigen middelen en werkomgeving',
-      omschrijving: 'In de thuiszorg/VVT worden materialen doorgaans door de instelling verstrekt; dit is een aandachtspunt dat gecompenseerd wordt door andere factoren.',
+      omschrijving: 'In de thuiszorg/VVT worden materialen doorgaans door de opdrachtgever verstrekt; dit is een aandachtspunt dat gecompenseerd wordt door andere factoren.',
       gewicht: 'LICHT',
       status: 'AANDACHT',
-      toelichting: 'Zorgmateriaal wordt door instelling verstrekt (sector-gebruikelijk). Wordt gecompenseerd door eigen BAV, AOV en eigen tarief.',
+      toelichting: 'Zorgmateriaal wordt door de opdrachtgever verstrekt (sector-gebruikelijk). Wordt gecompenseerd door eigen BAV en eigen tarief.',
       mitigatie: 'Eigen beroepsaansprakelijkheidsverzekering dekt professioneel risico.',
     },
     {
@@ -100,7 +100,7 @@ export function berekenGezichtspunten(input: GezichtspuntenInput): Gezichtspunte
     {
       id: 'economische-afhankelijkheid',
       naam: 'Economische afhankelijkheid',
-      omschrijving: 'De CZO is niet economisch afhankelijk van één opdrachtgever; inkomen is gespreid over meerdere instellingen.',
+      omschrijving: 'De CZO is niet economisch afhankelijk van één opdrachtgever; inkomen is gespreid over meerdere opdrachtgevers.',
       gewicht: 'ZWAAR',
       ...beoordeelEconomischeAfhankelijkheid(opdrachtgeversCount),
     },
@@ -135,7 +135,7 @@ function beoordeelInbedding(
     return {
       status: 'AANDACHT',
       toelichting: `${langLoopend.length} opdracht(en) lopen aaneengesloten langer dan ${ROOSTERVERVANGING_DREMPEL_WEKEN} weken op dezelfde afdeling. Dit is het zwaarst wegende signaal voor schijnzelfstandigheid.`,
-      mitigatie: 'Beëindig opdracht of varieer actief de inzet (andere afdeling/andere instelling).',
+      mitigatie: 'Beëindig opdracht of varieer actief de inzet (andere afdeling/andere opdrachtgever).',
     }
   }
   return {
@@ -149,7 +149,7 @@ function beoordeelGezag(
 ): Pick<GezichtspuntBeoordeling, 'status' | 'toelichting'> {
   return {
     status: 'CONFORM',
-    toelichting: "CZO's werken op basis van een opdrachtovereenkomst via de coöperatie, zonder hiërarchisch gezag van de instelling. De instelling bepaalt het wat (zorgvraag), de CZO bepaalt het hoe (uitvoering).",
+    toelichting: "CZO's werken op basis van een opdrachtovereenkomst via de coöperatie, zonder hiërarchisch gezag van de opdrachtgever. De opdrachtgever bepaalt het wat (zorgvraag), de CZO bepaalt het hoe (uitvoering).",
   }
 }
 
@@ -194,7 +194,7 @@ function beoordeelOndernemerschap(
   }
   return {
     status: 'CONFORM',
-    toelichting: `Ondernemerschap aantoonbaar: KvK aanwezig, eigen tarief vastgelegd, werkt voor ${opdrachtgeversCount} instelling(en).`,
+    toelichting: `Ondernemerschap aantoonbaar: KvK aanwezig, eigen tarief vastgelegd, werkt voor ${opdrachtgeversCount} opdrachtgever${opdrachtgeversCount !== 1 ? 's' : ''}.`,
   }
 }
 
@@ -204,19 +204,19 @@ function beoordeelEconomischeAfhankelijkheid(
   if (opdrachtgeversCount <= 1) {
     return {
       status: 'AANDACHT',
-      toelichting: 'CZO heeft in het afgelopen jaar bij 1 instelling gewerkt. Spreiding over meerdere opdrachtgevers is gewenst.',
+      toelichting: 'CZO heeft in het afgelopen jaar bij 1 opdrachtgever gewerkt. Spreiding over meerdere opdrachtgevers is gewenst.',
       mitigatie: 'Begeleiden naar een tweede opdrachtgever via de coöperatie.',
     }
   }
   if (opdrachtgeversCount === 2) {
     return {
       status: 'AANDACHT',
-      toelichting: 'CZO werkt bij 2 instellingen. Spreiding is in opbouw; 3 of meer opdrachtgevers per jaar is het doel.',
+      toelichting: 'CZO werkt bij 2 opdrachtgevers. Spreiding is in opbouw; 3 of meer opdrachtgevers per jaar is het doel.',
     }
   }
   return {
     status: 'CONFORM',
-    toelichting: `CZO heeft in het afgelopen jaar voor ${opdrachtgeversCount} verschillende instellingen gewerkt. Geen economische afhankelijkheid.`,
+    toelichting: `CZO heeft in het afgelopen jaar voor ${opdrachtgeversCount} verschillende opdrachtgevers gewerkt. Geen economische afhankelijkheid.`,
   }
 }
 

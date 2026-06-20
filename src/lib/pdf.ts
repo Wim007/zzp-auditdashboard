@@ -67,7 +67,7 @@ function bouwPaginaInhoud(params: {
     // Kop
     React.createElement(View, { key: 'kop', style: stijlen.kop },
       React.createElement(Text, { style: stijlen.title }, 'Kwalificatie en ondernemersverklaring — SamenOntzorgen'),
-      React.createElement(Text, { style: stijlen.subtitle }, `Instelling: ${zorginstelling.naam}`),
+      React.createElement(Text, { style: stijlen.subtitle }, `Opdrachtgever: ${zorginstelling.naam}`),
       React.createElement(Text, { style: stijlen.subtitle }, `Variant: ${variantLabel}`),
       React.createElement(Text, { style: stijlen.subtitle }, `Gegenereerd door: ${generatorNaam}`),
       React.createElement(Text, { style: stijlen.subtitle }, `Datum/tijd: ${geformatteerdDatum}`),
@@ -132,7 +132,7 @@ function bouwPaginaInhoud(params: {
           ),
           React.createElement(View, { key: 'ond-count', style: stijlen.rij },
             React.createElement(Text, { style: stijlen.label }, 'Opdrachtgevers:'),
-            React.createElement(Text, { style: stijlen.waarde }, `${dossier.opdrachtgeversCount} instelling(en)`),
+            React.createElement(Text, { style: stijlen.waarde }, `${dossier.opdrachtgeversCount} opdrachtgever${dossier.opdrachtgeversCount !== 1 ? 's' : ''}`),
           ),
           React.createElement(View, { key: 'hdr-ond-kop', style: stijlen.tabelKop },
             React.createElement(Text, { style: stijlen.kolom1 }, 'Verzekering / Document'),

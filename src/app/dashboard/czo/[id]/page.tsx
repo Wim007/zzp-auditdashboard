@@ -138,8 +138,8 @@ export default async function CZODetailPage({ params }: { params: { id: string }
               <OndernemersRij
                 label="Opdrachtgevers (afgelopen jaar)"
                 aanwezig={opdrachtgeversCount >= 3}
-                waarde={`${opdrachtgeversCount} instelling${opdrachtgeversCount !== 1 ? 'en' : ''}`}
-                ontbreektTekst={`${opdrachtgeversCount} instelling${opdrachtgeversCount !== 1 ? 'en' : ''} — doel is 3`}
+                waarde={`${opdrachtgeversCount} opdrachtgever${opdrachtgeversCount !== 1 ? 's' : ''}`}
+                ontbreektTekst={`${opdrachtgeversCount} opdrachtgever${opdrachtgeversCount !== 1 ? 's' : ''} — doel is 3`}
                 ontbreektKleur="amber"
               />
               {ondernemersDocs.map((doc) => <DocRij key={doc.id} doc={doc} />)}
