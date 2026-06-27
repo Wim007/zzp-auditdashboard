@@ -59,7 +59,7 @@ export default async function CZODetailPage({ params }: { params: { id: string }
           <Navigatie rol={rol} naam={naam} />
           <main className="max-w-2xl mx-auto px-6 py-16 text-center">
             <p className="text-gray-600">U heeft geen toegang tot dit dossier.</p>
-            <Link href="/dashboard" className="mt-4 inline-block text-sm text-blue-600 hover:underline">Terug naar dashboard</Link>
+            <Link href="/dashboard" className="mt-4 inline-block text-sm text-primary hover:underline">Terug naar dashboard</Link>
           </main>
         </div>
       )
@@ -79,7 +79,7 @@ export default async function CZODetailPage({ params }: { params: { id: string }
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
         {/* Broodkruimel */}
-        <Link href="/dashboard" className="text-sm text-blue-600 hover:underline mb-4 inline-block">
+        <Link href="/dashboard" className="text-sm text-primary hover:underline mb-4 inline-block">
           ← Terug naar dashboard
         </Link>
 
@@ -98,7 +98,7 @@ export default async function CZODetailPage({ params }: { params: { id: string }
         </div>
 
         {/* Systeem-compliance melding */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-800 mb-4">
+        <div className="bg-accent/10 border border-accent/30 rounded-lg px-4 py-3 text-sm text-primary mb-4">
           Status als lid: <span className="font-medium">{czo.status === 'ACTIEF' ? 'Actief — volledig compliant' : 'Hold — niet actief als lid'}</span>.
           Het systeem kan een niet-compliant lid niet activeren.
         </div>
@@ -210,7 +210,9 @@ export default async function CZODetailPage({ params }: { params: { id: string }
             Gewogen beoordeling: zwaar wegende punten (inbedding, gezag, ondernemerschap, economische afhankelijkheid) trekken de totaalstatus naar aandacht/risico, ook als de rest groen is.
           </p>
           <div className="space-y-2">
-            {score.gezichtspunten.map((g) => <GezichtspuntRij key={g.id} g={g} />)}
+            {score.gezichtspunten.map((g) => (
+              <GezichtspuntRij key={g.id} g={g} />
+            ))}
           </div>
         </section>
       </main>

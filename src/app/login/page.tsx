@@ -28,11 +28,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA]">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
           <div className="mb-8 text-center">
-            <h1 className="text-2xl font-bold text-gray-900">SamenOntzorgen</h1>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/samenontzorgen-logo.svg" alt="SamenOntzorgen" className="h-10 w-auto mx-auto mb-3" />
             <p className="text-sm text-gray-500 mt-1">Veiligheidsdashboard</p>
           </div>
 
@@ -41,13 +42,13 @@ export default function LoginPage() {
             <button
               onClick={() => login('inkoop@delinden.nl', 'linden123')}
               disabled={bezig}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-3 text-sm transition-colors text-left flex items-center justify-between"
+              className="w-full bg-accent hover:bg-accent-dark disabled:opacity-50 text-white font-medium rounded-lg px-4 py-3 text-sm transition-colors text-left flex items-center justify-between"
             >
               <span>
                 <span className="font-semibold">Bekijk demo</span>
-                <span className="text-blue-200 ml-2 text-xs">Thuiszorg De Linden</span>
+                <span className="text-white/80 ml-2 text-xs">Thuiszorg De Linden</span>
               </span>
-              <span className="text-blue-200 text-xs">{bezig ? '...' : 'Inloggen →'}</span>
+              <span className="text-white/80 text-xs">{bezig ? '...' : 'Inloggen →'}</span>
             </button>
           </div>
 
@@ -68,7 +69,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                 placeholder="e-mailadres"
               />
               <input
@@ -76,13 +77,13 @@ export default function LoginPage() {
                 value={wachtwoord}
                 onChange={(e) => setWachtwoord(e.target.value)}
                 required
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                 placeholder="wachtwoord"
               />
               <button
                 type="submit"
                 disabled={bezig}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 text-sm transition-colors"
+                className="w-full bg-primary hover:bg-primary-dark disabled:opacity-50 text-white font-medium rounded-lg px-4 py-2 text-sm transition-colors"
               >
                 {bezig ? 'Inloggen...' : 'Inloggen'}
               </button>

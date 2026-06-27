@@ -58,7 +58,7 @@ export default async function BeheerPage() {
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">Recente toegangslog (AVG)</h2>
-            <Link href="/beheer/log" className="text-xs text-blue-600 hover:underline">Volledig log</Link>
+            <Link href="/beheer/log" className="text-xs text-primary hover:underline">Volledig log</Link>
           </div>
           {logs.length === 0 ? (
             <div className="px-6 py-8 text-center text-sm text-gray-400">

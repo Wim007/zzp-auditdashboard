@@ -19,7 +19,7 @@ export default async function LogPage() {
       <Navigatie rol={session.user.rol} naam={session.user.naam} />
       <main className="max-w-5xl mx-auto px-6 py-8">
         <div className="flex items-center gap-3 mb-6">
-          <Link href="/beheer" className="text-sm text-blue-600 hover:underline">← Beheer</Link>
+          <Link href="/beheer" className="text-sm text-primary hover:underline">← Beheer</Link>
         </div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Toegangslog</h1>
         <p className="text-sm text-gray-500 mb-6">
@@ -51,7 +51,7 @@ export default async function LogPage() {
                     <td className="px-4 py-3">
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                         log.actie.startsWith('BEWIJSPAKKET')
-                          ? 'bg-blue-100 text-blue-800'
+                          ? 'bg-accent/10 text-primary'
                           : 'bg-gray-100 text-gray-700'
                       }`}>
                         {log.actie}

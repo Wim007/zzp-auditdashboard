@@ -15,6 +15,13 @@ const config: Config = {
         rood: { DEFAULT: '#dc2626', licht: '#fee2e2', donker: '#7f1d1d' },
         blauw: { DEFAULT: '#2563eb', licht: '#dbeafe', donker: '#1e3a5f' },
         grijs: { DEFAULT: '#6b7280', licht: '#f9fafb', donker: '#111827' },
+        // SamenOntzorgen huisstijl (zie samenontzorgen-website/css/style.css)
+        primary: { DEFAULT: '#1B4F72', dark: '#154360' },
+        accent: { DEFAULT: '#00BCD4', dark: '#0097a7' },
+        pink: { DEFAULT: '#D4325A', light: '#fdeef1' },
+      },
+      fontFamily: {
+        sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
       },
     },
   },

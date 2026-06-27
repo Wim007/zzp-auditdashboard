@@ -105,7 +105,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Systeem-compliance uitleg */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm text-blue-800">
+        <div className="bg-accent/10 border border-accent/30 rounded-lg p-4 mb-6 text-sm text-primary">
           <span className="font-medium">Systeemgarantie: </span>
           De ledenadministratie van SamenOntzorgen kan een niet-compliant lid technisch niet activeren. Een actieve lidstatus betekent per definitie volledige compliance op dit moment.
         </div>

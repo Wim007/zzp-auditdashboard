@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 200" width="1640" height="400">
+
+  <!-- Hart geschaald naar ~130px hoog, linksbovenin -->
+  <g transform="translate(5, 8) scale(0.73)">
+    <!-- Teal helft -->
+    <path fill="#19ada7" d="M113.72,43.85S135.45-.54,179.68,8.28c44.23,8.82,44.2,57.72,19.36,99.64-33.98,57.33-85.32,77.92-85.32,77.92,0,0,40.07-40.59,61.5-81.96,22.55-43.53,5.25-96.76-61.5-60.03Z"/>
+    <!-- Rode helft -->
+    <path fill="#d92536" d="M107.59,43.85S87.28,2.65,46.04,7.12C4.8,11.58-9.69,61.48,24.52,111.22c36.94,54.36,82.06,73.46,82.06,73.46,0,0-32.85-28.18-56.88-73.88-23.03-43.81-12.38-76.16,14.48-78.71,25.45-2.41,43.39,11.75,43.39,11.75Z"/>
+  </g>
+
+  <!-- Tekst start na het hart (hart is ~155px breed bij scale 0.73) -->
+  <text x="165" y="112" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="78" letter-spacing="-1">
+    <tspan fill="#d92536">Samen</tspan><tspan fill="#19ada7">Ontzorgen</tspan>
+  </text>
+
+  <!-- Tagline onder de naam, in de groen-blauwe (teal) kleur -->
+  <text x="166" y="152" font-family="Arial, Helvetica, sans-serif" font-style="italic" font-weight="500" font-size="32" letter-spacing="0" fill="#19ada7">
+    Van zorgen naar grip
+  </text>
+</svg>
