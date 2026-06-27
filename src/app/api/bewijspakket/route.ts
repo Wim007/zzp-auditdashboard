@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { adapter } from '@/lib/adapters'
 import { instellingMagCZOZien } from '@/lib/scoping'
 import { berekenGezichtspunten } from '@/lib/gezichtspunten'
+import { berekenAandachtspunten } from '@/lib/signalen'
 import { genereerBewijspakketPDF } from '@/lib/pdf'
 import type { BewijspakketVariant, CZODossier } from '@/types'
 
@@ -29,6 +30,9 @@ export async function POST(req: NextRequest) {
     : beschikbareCzos
 
   const dossiers: CZODossier[] = []
+  const documentenPerCZO: Record<string, Awaited<ReturnType<typeof adapter.getDocumentenVoorCZO>>> = {}
+  const opdrachtenPerCZO: Record<string, Awaited<ReturnType<typeof adapter.getOpdrachtenVoorCZO>>> = {}
+  const opdrachtgeversCountPerCZO: Record<string, number> = {}
 
   for (const czo of teGenereren) {
     const [documenten, opdrachten, opdrachtgeversCount] = await Promise.all([
@@ -41,6 +45,10 @@ export async function POST(req: NextRequest) {
     if (rol === 'INSTELLING_GEBRUIKER') {
       if (!instellingMagCZOZien(instellingId, opdrachten)) continue
     }
+
+    documentenPerCZO[czo.id] = documenten
+    opdrachtenPerCZO[czo.id] = opdrachten
+    opdrachtgeversCountPerCZO[czo.id] = opdrachtgeversCount
 
     const gezichtspuntenScore = berekenGezichtspunten({ czo, documenten, opdrachten, opdrachtgeversCount })
 
@@ -58,11 +66,23 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Geen CZOs beschikbaar' }, { status: 404 })
   }
 
+  const kwartaalaudits = await adapter.getKwartaalauditsVoorInstelling(instellingId)
+  const aandachtspunten = berekenAandachtspunten({
+    czos: dossiers.map(d => d.czo),
+    documentenPerCZO,
+    opdrachtenPerCZO,
+    opdrachtgeversCountPerCZO,
+    kwartaalaudits,
+    zorginstellingId: instellingId,
+    zorginstellingNaam: zorginstelling.naam,
+  })
+
   const pdfBuffer = await genereerBewijspakketPDF({
     zorginstelling,
     dossiers,
     variant,
     generatorNaam: session.user.naam,
+    aandachtspunten,
   })
 
   // Log de generatie

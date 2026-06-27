@@ -1,8 +1,9 @@
 import React from 'react'
-import { Document, Page, Text, View, StyleSheet, renderToBuffer } from '@react-pdf/renderer'
-import type { CZODossier, BewijspakketVariant, Zorginstelling } from '@/types'
+import { Document, Page, Text, View, StyleSheet, Link, renderToBuffer } from '@react-pdf/renderer'
+import type { CZODossier, BewijspakketVariant, Zorginstelling, Aandachtspunt } from '@/types'
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
+import { kvkZoekUrl, bigZoekUrl } from '@/lib/verificatie'
 
 const stijlen = StyleSheet.create({
   pagina: { padding: 48, fontFamily: 'Helvetica', fontSize: 10, color: '#111827' },
@@ -24,6 +25,13 @@ const stijlen = StyleSheet.create({
   kolom1: { flex: 2 },
   kolom2: { flex: 1 },
   kolom3: { flex: 1 },
+  link: { color: '#1d4ed8', textDecoration: 'underline' },
+  bronRij: { flexDirection: 'row', marginBottom: 2 },
+  bronLabel: { width: 100, color: '#6b7280', fontSize: 9 },
+  samenvatting: { marginTop: 24, padding: 12, backgroundColor: '#fff', borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 4 },
+  samenvattingKop: { fontSize: 12, fontWeight: 'bold', marginBottom: 6 },
+  samenvattingRij: { flexDirection: 'row', marginBottom: 3 },
+  samenvattingLabel: { width: 170, color: '#6b7280' },
 })
 
 type BadgeStijl = ReturnType<typeof StyleSheet.create>[string]
@@ -56,8 +64,9 @@ function bouwPaginaInhoud(params: {
   variant: BewijspakketVariant
   generatorNaam: string
   gegenereerd: Date
+  aandachtspunten: Aandachtspunt[]
 }): React.ReactElement[] {
-  const { zorginstelling, dossiers, variant, generatorNaam, gegenereerd } = params
+  const { zorginstelling, dossiers, variant, generatorNaam, gegenereerd, aandachtspunten } = params
   const variantLabel = { DBA: 'Belastingdienst (DBA)', KWALITEIT: 'Kwaliteitscontrole', VOLLEDIG: 'Volledig' }[variant]
   const geformatteerdDatum = format(gegenereerd, 'PPPPp', { locale: nl })
   const toonBekwaamheid = variant === 'KWALITEIT' || variant === 'VOLLEDIG'
@@ -94,12 +103,28 @@ function bouwPaginaInhoud(params: {
           React.createElement(Text, { style: stijlen.waarde }, dossier.czo.functie ?? '-'),
         ),
         React.createElement(View, { style: stijlen.rij },
-          React.createElement(Text, { style: stijlen.label }, 'BIG-nummer:'),
-          React.createElement(Text, { style: stijlen.waarde }, dossier.czo.bigNummer ?? '-'),
+          React.createElement(Text, { style: stijlen.label }, 'KvK-nummer:'),
+          dossier.czo.kvkNummer
+            ? React.createElement(Link, { style: [stijlen.waarde, stijlen.link], src: kvkZoekUrl(dossier.czo.kvkNummer) }, `${dossier.czo.kvkNummer} (controleer bij KVK)`)
+            : React.createElement(Text, { style: stijlen.waarde }, 'Niet geregistreerd'),
         ),
         React.createElement(View, { style: stijlen.rij },
-          React.createElement(Text, { style: stijlen.label }, 'KvK-nummer:'),
-          React.createElement(Text, { style: stijlen.waarde }, dossier.czo.kvkNummer ?? 'Niet geregistreerd'),
+          React.createElement(Text, { style: stijlen.label }, 'BIG-nummer:'),
+          dossier.czo.bigNummer
+            ? React.createElement(Link, { style: [stijlen.waarde, stijlen.link], src: bigZoekUrl(dossier.czo.bigNummer) }, `${dossier.czo.bigNummer} (controleer bij BIG-register)`)
+            : React.createElement(Text, { style: stijlen.waarde }, 'Niet geregistreerd'),
+        ),
+        React.createElement(View, { style: stijlen.rij },
+          React.createElement(Text, { style: stijlen.label }, 'Website:'),
+          dossier.czo.website
+            ? React.createElement(Link, { style: [stijlen.waarde, stijlen.link], src: dossier.czo.website }, dossier.czo.website)
+            : React.createElement(Text, { style: stijlen.waarde }, 'Niet geregistreerd'),
+        ),
+        React.createElement(View, { style: stijlen.rij },
+          React.createElement(Text, { style: stijlen.label }, 'LinkedIn:'),
+          dossier.czo.linkedinUrl
+            ? React.createElement(Link, { style: [stijlen.waarde, stijlen.link], src: dossier.czo.linkedinUrl }, dossier.czo.linkedinUrl)
+            : React.createElement(Text, { style: stijlen.waarde }, 'Niet geregistreerd'),
         ),
         React.createElement(View, { style: stijlen.rij },
           React.createElement(Text, { style: stijlen.label }, 'Status als lid:'),
@@ -153,6 +178,38 @@ function bouwPaginaInhoud(params: {
     )
   }
 
+  // Beoordelingssamenvatting / bewijsblok
+  const dossierIds = new Set(dossiers.map(d => d.czo.id))
+  const relevantePunten = aandachtspunten.filter(p => !p.czoId || dossierIds.has(p.czoId))
+  const openPunten = relevantePunten.filter(p => p.status === 'OPEN')
+  const gecontroleerdeBronnen = Array.from(new Set([
+    'KVK (KvK-nummer)', 'BIG-register (BIG-nummer)',
+    ...dossiers.some(d => d.czo.website) ? ['Openbare website'] : [],
+    ...dossiers.some(d => d.czo.linkedinUrl) ? ['LinkedIn-profiel'] : [],
+    'Interne documentuploads (VOG, BAV, diploma, KvK-uittreksel)',
+  ]))
+
+  inhoud.push(
+    React.createElement(View, { key: 'samenvatting', style: stijlen.samenvatting },
+      React.createElement(Text, { style: stijlen.samenvattingKop }, 'Beoordelingssamenvatting'),
+      React.createElement(View, { style: stijlen.samenvattingRij },
+        React.createElement(Text, { style: stijlen.samenvattingLabel }, 'Gecontroleerde bronnen:'),
+        React.createElement(Text, { style: stijlen.waarde }, gecontroleerdeBronnen.join(', ')),
+      ),
+      React.createElement(View, { style: stijlen.samenvattingRij },
+        React.createElement(Text, { style: stijlen.samenvattingLabel }, 'Open aandachtspunten:'),
+        React.createElement(Text, { style: stijlen.waarde }, openPunten.length === 0 ? 'Geen' : `${openPunten.length} openstaand (zie dashboard voor details)`),
+      ),
+      React.createElement(View, { style: stijlen.samenvattingRij },
+        React.createElement(Text, { style: stijlen.samenvattingLabel }, 'Datum laatste controle:'),
+        React.createElement(Text, { style: stijlen.waarde }, geformatteerdDatum),
+      ),
+      React.createElement(Text, { style: { fontSize: 8, color: '#6b7280', marginTop: 8 } },
+        'Dit document dient als bewijsrapport van de op de genoemde datum geldende status en bronnen. Het is geen reclame-uiting.'
+      ),
+    )
+  )
+
   inhoud.push(
     React.createElement(Text, {
       key: 'footer',
@@ -168,8 +225,10 @@ export async function genereerBewijspakketPDF(params: {
   dossiers: CZODossier[]
   variant: BewijspakketVariant
   generatorNaam: string
+  aandachtspunten?: Aandachtspunt[]
 }): Promise<Buffer> {
   const gegenereerd = new Date()
+  const aandachtspunten = params.aandachtspunten ?? []
 
   const doc = React.createElement(
     Document,
@@ -177,7 +236,7 @@ export async function genereerBewijspakketPDF(params: {
     React.createElement(
       Page,
       { size: 'A4', style: stijlen.pagina },
-      ...bouwPaginaInhoud({ ...params, gegenereerd })
+      ...bouwPaginaInhoud({ ...params, gegenereerd, aandachtspunten })
     )
   )
 

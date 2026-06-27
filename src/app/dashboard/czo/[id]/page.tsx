@@ -5,12 +5,14 @@ import { adapter } from '@/lib/adapters'
 import { instellingMagCZOZien } from '@/lib/scoping'
 import { berekenGezichtspunten } from '@/lib/gezichtspunten'
 import { Navigatie } from '@/components/ui/Navigatie'
-import { StatusBadge, DocumentStatusBadge } from '@/components/ui/StatusBadge'
+import { StatusBadge } from '@/components/ui/StatusBadge'
 import { BewijspakketKnop } from '@/components/BewijspakketKnop'
+import { VerificatieRegel } from '@/components/ui/VerificatieRegel'
 import Link from 'next/link'
 import type { Document, GezichtspuntBeoordeling } from '@/types'
 import { format } from 'date-fns'
 import { nl } from 'date-fns/locale'
+import { kvkZoekUrl, bigZoekUrl } from '@/lib/verificatie'
 
 const docTypeLabel: Record<string, string> = {
   DIPLOMA: 'Diploma', BIG: 'BIG-registratie', VOG: 'VOG',
@@ -103,61 +105,71 @@ export default async function CZODetailPage({ params }: { params: { id: string }
 
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Bekwaamheidsdossier */}
-          <section className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <section id="bekwaamheidsdossier" className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-5 py-4 border-b border-gray-100 bg-gray-50">
               <h2 className="font-semibold text-gray-900 text-sm">Bekwaamheidsdossier</h2>
               <p className="text-xs text-gray-500 mt-0.5">Mag deze persoon de taak uitvoeren?</p>
             </div>
             <div className="divide-y divide-gray-50">
+              <VerificatieRegel
+                label="BIG-nummer"
+                bron="BIG"
+                status={czo.bigNummer ? 'aanwezig' : 'ontbreekt'}
+                waarde={czo.bigNummer ?? undefined}
+                fallbackTekst="Niet geregistreerd"
+                actie={czo.bigNummer ? { type: 'EXTERN', href: bigZoekUrl(czo.bigNummer) } : undefined}
+              />
               {bekwaamheidsDocs.length === 0 && (
                 <p className="px-5 py-4 text-sm text-gray-400">Geen documenten geregistreerd.</p>
               )}
-              {bekwaamheidsDocs.map((doc) => <DocRij key={doc.id} doc={doc} />)}
+              {bekwaamheidsDocs.map((doc) => <DocVerificatieRegel key={doc.id} doc={doc} />)}
             </div>
           </section>
 
           {/* Ondernemerschapsdossier */}
-          <section className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <section id="ondernemerschapsdossier" className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-5 py-4 border-b border-gray-100 bg-gray-50">
               <h2 className="font-semibold text-gray-900 text-sm">Ondernemerschapsdossier</h2>
               <p className="text-xs text-gray-500 mt-0.5">Is deze persoon echt zelfstandig? (DBA)</p>
             </div>
             <div className="divide-y divide-gray-50">
-              <OndernemersRij
-                label="KvK-registratie"
-                aanwezig={!!czo.kvkNummer}
+              <VerificatieRegel
+                label="KVK-nummer"
+                bron="KVK"
+                status={czo.kvkNummer ? 'aanwezig' : 'ontbreekt'}
                 waarde={czo.kvkNummer ?? undefined}
-                ontbreektTekst="Niet geregistreerd"
+                fallbackTekst="Niet geregistreerd"
+                actie={czo.kvkNummer ? { type: 'EXTERN', href: kvkZoekUrl(czo.kvkNummer) } : undefined}
               />
-              <OndernemersRij
+              <VerificatieRegel
                 label="Eigen tarief"
-                aanwezig={!!czo.eigenTarief}
+                bron="INTERN"
+                status={czo.eigenTarief ? 'aanwezig' : 'ontbreekt'}
                 waarde={czo.eigenTarief ? `€ ${Number(czo.eigenTarief)}/uur` : undefined}
-                ontbreektTekst="Niet ingesteld"
+                fallbackTekst="Niet ingesteld"
               />
-              <OndernemersRij
+              <VerificatieRegel
                 label="Opdrachtgevers (afgelopen jaar)"
-                aanwezig={opdrachtgeversCount >= 3}
+                bron="INTERN"
+                status={opdrachtgeversCount >= 3 ? 'aanwezig' : 'aandacht'}
                 waarde={`${opdrachtgeversCount} opdrachtgever${opdrachtgeversCount !== 1 ? 's' : ''}`}
-                ontbreektTekst={`${opdrachtgeversCount} opdrachtgever${opdrachtgeversCount !== 1 ? 's' : ''} — doel is 3`}
-                ontbreektKleur="amber"
               />
-              {ondernemersDocs.map((doc) => <DocRij key={doc.id} doc={doc} />)}
-              <OndernemersRij
+              {ondernemersDocs.map((doc) => <DocVerificatieRegel key={doc.id} doc={doc} />)}
+              <VerificatieRegel
                 label="Website"
-                aanwezig={!!czo.website}
+                bron="WEBSITE"
+                status={czo.website ? 'aanwezig' : 'ontbreekt'}
                 waarde={czo.website ?? undefined}
-                link={czo.website ?? undefined}
-                ontbreektTekst="Niet geregistreerd"
-                ontbreektKleur="grijs"
+                fallbackTekst="Niet geregistreerd"
+                actie={czo.website ? { type: 'EXTERN', href: czo.website } : undefined}
               />
-              <OndernemersRij
+              <VerificatieRegel
                 label="LinkedIn-profiel"
-                aanwezig={!!czo.linkedinUrl}
-                waarde={czo.linkedinUrl ? 'Profiel bekijken' : undefined}
-                link={czo.linkedinUrl ?? undefined}
-                ontbreektTekst="Niet geregistreerd"
-                ontbreektKleur="grijs"
+                bron="LINKEDIN"
+                status={czo.linkedinUrl ? 'aanwezig' : 'ontbreekt'}
+                waarde={czo.linkedinUrl ? 'Profiel beschikbaar' : undefined}
+                fallbackTekst="Niet geregistreerd"
+                actie={czo.linkedinUrl ? { type: 'EXTERN', href: czo.linkedinUrl } : undefined}
               />
             </div>
           </section>
@@ -206,57 +218,19 @@ export default async function CZODetailPage({ params }: { params: { id: string }
   )
 }
 
-function DocRij({ doc }: { doc: Document }) {
+function DocVerificatieRegel({ doc }: { doc: Document }) {
+  const status = doc.status === 'GELDIG' ? 'aanwezig' : doc.status === 'AANDACHT' ? 'aandacht' : 'ontbreekt'
+  const geldigTot = doc.vervaldatum ? format(new Date(doc.vervaldatum), 'dd-MM-yyyy') : undefined
   return (
-    <div className="flex items-center justify-between px-5 py-3 gap-2">
-      <div className="min-w-0">
-        <p className="text-sm font-medium text-gray-900">{docTypeLabel[doc.type] ?? doc.type}</p>
-        {doc.omschrijving && <p className="text-xs text-gray-500 truncate">{doc.omschrijving}</p>}
-      </div>
-      <div className="flex items-center gap-2 flex-shrink-0 text-right">
-        {doc.vervaldatum && (
-          <p className="text-xs text-gray-400">{format(new Date(doc.vervaldatum), 'dd-MM-yyyy')}</p>
-        )}
-        <DocumentStatusBadge status={doc.status} />
-      </div>
-    </div>
-  )
-}
-
-function OndernemersRij({
-  label, aanwezig, waarde, link, ontbreektTekst, ontbreektKleur = 'amber',
-}: {
-  label: string
-  aanwezig: boolean
-  waarde?: string
-  link?: string
-  ontbreektTekst: string
-  ontbreektKleur?: 'amber' | 'rood' | 'grijs'
-}) {
-  const ontbreektClass = ontbreektKleur === 'rood' ? 'text-red-600' : ontbreektKleur === 'grijs' ? 'text-gray-400' : 'text-amber-600'
-  return (
-    <div className="flex items-center justify-between px-5 py-3 text-sm">
-      <span className="text-gray-600">{label}</span>
-      {aanwezig ? (
-        link ? (
-          <a href={link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-green-700 font-medium hover:underline">
-            <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-            </svg>
-            {waarde}
-          </a>
-        ) : (
-          <span className="flex items-center gap-1 text-green-700 font-medium">
-            <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-            </svg>
-            {waarde}
-          </span>
-        )
-      ) : (
-        <span className={`${ontbreektClass}`}>{ontbreektTekst}</span>
-      )}
-    </div>
+    <VerificatieRegel
+      label={docTypeLabel[doc.type] ?? doc.type}
+      bron="UPLOAD"
+      status={status}
+      waarde={doc.status === 'ONTBREEKT' ? undefined : (doc.omschrijving ?? 'Aanwezig')}
+      geldigTot={geldigTot}
+      fallbackTekst="Document nog niet geüpload"
+      actie={doc.bestandsverwijzing ? { type: 'DOCUMENT', href: doc.bestandsverwijzing } : undefined}
+    />
   )
 }
 

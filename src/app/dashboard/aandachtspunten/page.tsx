@@ -5,6 +5,7 @@ import { adapter } from '@/lib/adapters'
 import { berekenAandachtspunten } from '@/lib/signalen'
 import { Navigatie } from '@/components/ui/Navigatie'
 import { VervangersKnop } from '@/components/VervangersKnop'
+import { actieLabel } from '@/lib/verificatie'
 import type { Aandachtspunt } from '@/types'
 
 const typeLabels: Record<Aandachtspunt['type'], string> = {
@@ -104,13 +105,41 @@ function Groep({ titel, punten, kleur }: { titel: string; punten: Aandachtspunt[
                 {p.type === 'ROOSTERVERVANGING' && p.czoNaam && (
                   <VervangersKnop czoNaam={p.czoNaam} />
                 )}
-                {p.czoId && (
+                {p.type === 'DOCUMENT_AANDACHT' && (
+                  (() => {
+                    const bestandsverwijzing = p.metadata?.bestandsverwijzing
+                    return typeof bestandsverwijzing === 'string' ? (
+                      <a
+                        href={bestandsverwijzing}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs bg-white border border-current px-2 py-1.5 rounded-md hover:bg-opacity-80 transition-colors"
+                      >
+                        {actieLabel.DOCUMENT}
+                      </a>
+                    ) : (
+                      <span className="text-xs text-gray-500 px-2 py-1.5">Document nog niet geüpload</span>
+                    )
+                  })()
+                )}
+                {p.type === 'GEEN_ONDERNEMERSDOSSIER' && p.czoId && (
+                  <a
+                    href={`/dashboard/czo/${p.czoId}#ondernemerschapsdossier`}
+                    className="text-xs bg-white border border-current px-2 py-1.5 rounded-md hover:bg-opacity-80 transition-colors"
+                  >
+                    {actieLabel.DOSSIER}
+                  </a>
+                )}
+                {p.czoId && p.type !== 'GEEN_ONDERNEMERSDOSSIER' && (
                   <a
                     href={`/dashboard/czo/${p.czoId}`}
                     className="text-xs bg-white border border-current px-2 py-1.5 rounded-md hover:bg-opacity-80 transition-colors"
                   >
-                    Dossier bekijken
+                    {actieLabel.DOSSIER}
                   </a>
+                )}
+                {!p.czoId && p.type === 'AUDIT_OPENSTAAND' && (
+                  <span className="text-xs text-gray-500 px-2 py-1.5">Wacht op ondertekening door zorginkoper</span>
                 )}
               </div>
             </div>

@@ -103,6 +103,7 @@ export function berekenAandachtspunten(params: {
           omschrijving: `Document "${doc.type}" van ${czo.naam} heeft status "${doc.status}".`,
           status: 'OPEN',
           ernst: doc.status === 'ONTBREEKT' ? 'RISICO' : 'AANDACHT',
+          metadata: { docId: doc.id, docType: doc.type, bestandsverwijzing: doc.bestandsverwijzing ?? null },
         })
       }
     }
